@@ -100,7 +100,7 @@ function VendorProducts(props) {
                                     <Typography variant="h4" style={{marginLeft: 5}}>R$ {price}</Typography>
                                 </Grid>
                                 <Grid item>
-                                    <Link to="/empresa/1" style={{ textDecoration: 'none' }}>
+                                    <Link to={`/produto/${id}`} style={{ textDecoration: 'none' }}>
                                         <Button variant="contained" color="primary">Visualizar</Button>
                                     </Link>
                                 </Grid>

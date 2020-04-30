@@ -9,18 +9,16 @@ import axios from 'axios';
 
 import FormControl from '@material-ui/core/FormControl';
 
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
-    paper: {
-        padding: theme.spacing(2),
-        textAlign: 'center',
-        border: '1px solid #c6c6c6 rgba(0,0,0,0.1)',
-        boxShadow: '1px 2px 3px 1px rgba(0,0,0,0.2)',
-        color: theme.palette.text.secondary,
+  paper: {
+    padding: theme.spacing(2),
+    textAlign: 'center',
+    border: '1px solid #c6c6c6 rgba(0,0,0,0.1)',
+    boxShadow: '1px 2px 3px 1px rgba(0,0,0,0.2)',
+    color: theme.palette.text.secondary,
   },
   // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
@@ -85,6 +83,11 @@ function Configs( props ) {
    });
   }
 
+  function callWhatsapp() {
+    let texto = "Essa mensagem contem texto predefinido";
+    console.log("tentou");
+  }
+
   
 
 
@@ -107,6 +110,7 @@ function Configs( props ) {
             fontSize: '1.4rem',
         }
     };
+    
 
   return (
     <div className={classes.root}>
@@ -167,7 +171,7 @@ function Configs( props ) {
                                     <Input
                                     id="inputCep"
                                     onChange={(e) => setCep(e.target.value)}
-                                    style={{width: 150}} />
+                                    />
                                     <Button variant="contained" color="primary" style={{marginLeft: 20}} onClick={getAddressAPI}>Buscar</Button>
                                     </Grid>
                                 </FormControl>
@@ -182,7 +186,8 @@ function Configs( props ) {
                 <Paper className={classes.paper}>
                     <ThemeProvider theme={theme}>
                         <Typography variant="h4" color="textPrimary">Pagamento</Typography>
-                    </ThemeProvider>
+                        <a href={`https://api.whatsapp.com/send?phone=554298721792&text=TextoAutomaticoViaAPP`} target="_blank">Abrir ZAP</a>
+                        </ThemeProvider>
                 </Paper>
             </Grid>
         </Grid>
