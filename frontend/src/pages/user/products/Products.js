@@ -2,12 +2,16 @@ import React, { useState } from 'react';
 import {useParams} from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Paper, Box, Button, Divider } from '@material-ui/core';
+import { Grid, Paper, Box, Button, Divider, MenuItem, Select } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Sidebar from '../../../components/Sidebar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css'; 
+
+
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
 
 import productIcon from '../../../assets/productIcon.svg';
 import { Link } from "react-router-dom";
@@ -59,7 +63,10 @@ const product = {
     vendorId: '',
     preco:  199.99,
     attributes: [
-        { genero: 'XX' , cor: 'YY' } ],
+        { Gênero: 'XX' },
+        { Cor: 'YY' },
+        { Observação: 'Um texto muito grande Um texto muito grande Um texto muito grande Um texto muito grande Um texto muito grande'}
+    ],
     pictures: [
         'http://192.168.1.28:3000/uploads/empresaID_produtoID_img1.jpg',
         'http://192.168.1.28:3000/uploads/empresaID_produtoID_img2.jpg',
@@ -119,14 +126,51 @@ function Products(props) {
             </Grid>
             <Grid item xs={12} sm={6}>
                 <Paper className={classes.paper}>
-                    <Grid container direction="row">
-                        <Typography variant="h6" color="textPrimary">Características</Typography>
-                        <Grid item>
-
+                    <Grid container direction="column">
+                        <Grid item style={{marginBottom: 10, textAlign: 'left'}}>
+                            <Typography variant="h6" color="textPrimary">Características</Typography>
                         </Grid>
-                        <Link to={`/produto/X`} style={{ textDecoration: 'none' }}>
-                            <Button variant="contained" color="primary">Comprar</Button>
-                        </Link>
+                       
+                        <Divider style={{marginBottom: 10}} />
+                        
+                        { product.attributes.map( (attribute) => (
+                            <Grid key={Object.keys(attribute)} item style={{marginBottom: 10, textAlign: 'left'}}>
+                                <Typography variant={Object.keys(attribute) == 'Observação' ? "body1" : "h6"} ><b>{Object.keys(attribute)}:</b> {attribute[Object.keys(attribute)]}</Typography>
+                            </Grid>
+                        )) }
+                        <Divider style={{marginBottom: 10}} />
+                        <Grid container direction="row" alignItems="flex-end" justify="space-between" spacing={2}>
+                            <Grid item xs={12} sm={4}>
+                                <Typography variant="h6" color="textPrimary">R$ {product.preco}</Typography>
+                            </Grid>
+                            <Grid item xs={6} sm={4}>
+                                { product.estoque.length > 1 
+                                ? (
+                                    <FormControl className={classes.formControl}>
+                                    <Select
+                                        defaultValue={""}
+                                      displayEmpty
+                                      className={classes.selectEmpty}
+                                      inputProps={{ 'aria-label': 'Without label' }}
+                                    >
+                                      <MenuItem value="" disabled>
+                                        Selecionar
+                                      </MenuItem>
+                                      <MenuItem value={10}>44</MenuItem>
+                                      <MenuItem value={20}>45</MenuItem>
+                                      <MenuItem value={30}>46</MenuItem>
+                                    </Select>
+                                    <FormHelperText>Tamanho do Produto</FormHelperText>
+                                  </FormControl>
+                                )
+                                : <Typography variant="body1">Produto com Tamanho Unico</Typography> }
+                            </Grid>
+                            <Grid item xs={6} sm={4}>
+                            <Link to={`/produto/X`} style={{ textDecoration: 'none' }}>
+                                <Button variant="contained" color="primary">Comprar</Button>
+                            </Link>
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Paper>
             </Grid>
