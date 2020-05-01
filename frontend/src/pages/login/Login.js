@@ -71,8 +71,13 @@ function Register( props ) {
     try {
         console.log('enviou: ',data);
         const response = await api.post('/auth/authenticate', data);
+
+        localStorage.setItem('buyconta', 1);
+        localStorage.setItem('buylocal', response.data.user.endereco[3].localidade);
+        localStorage.setItem('buynome', response.data.user.name);
+
         history.push({
-            pathname: "/user/home",
+            pathname: "/home",
             state: { call: 'Login bem sucedido!' }
         });
     } catch (err) {
@@ -92,6 +97,11 @@ function Register( props ) {
     try {
         console.log('enviou: ',data);
         const response = await api.post('/auth/authenticateVendor', data);
+
+        localStorage.setItem('buyconta', 2);
+        localStorage.setItem('buylocal', response.data.vendor.endereco[3].localidade);
+        localStorage.setItem('buynome', response.data.vendor.name);
+
         history.push({
             pathname: "/vendor/home",
             state: { call: 'Login bem sucedido!' }

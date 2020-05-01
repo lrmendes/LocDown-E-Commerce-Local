@@ -23,7 +23,7 @@ import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import AddShoppingCartOutlinedIcon from '@material-ui/icons/AddShoppingCartOutlined';
 import { Link } from "react-router-dom";
 import { Box } from "@material-ui/core";
-
+import { useHistory } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -87,7 +87,7 @@ function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
     { name: 1, label: 'Buscar', route: '/inventory', Icon: SearchOutlinedIcon},
     { name: 2, label: 'Carrinho', route: '/sales', Icon: AddShoppingCartOutlinedIcon},
     { name: 3, label: 'Configurações', route: '/configs', Icon: SettingsOutlinedIcon},
-    { name: 4, label: 'Sair', route: '/fa', Icon: ExitToAppOutlinedIcon},
+    { name: 4, label: 'Sair', route: '/logout', Icon: ExitToAppOutlinedIcon},
   ]
 
   const drawer = (

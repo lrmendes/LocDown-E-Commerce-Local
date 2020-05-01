@@ -8,6 +8,11 @@ import Products from './pages/user/products/Products';
 
 import Register from './pages/register/Register';
 import Login from './pages/login/Login';
+import Logout from './pages/logout/Logout';
+
+import VProducts from './pages/vendor/products/VProducts';
+import VHome from './pages/vendor/home/VHome';
+import VConfigs from './pages/vendor/configs/VConfigs';
 
 function App() {
 
@@ -20,9 +25,16 @@ function App() {
               <Route path="/empresa/:id" exact component={() => <VendorProducts /> }></Route>
               <Route path="/produto/:id" exact component={() => <Products /> }></Route>
               <Route path="/home" exact component={() => <Home /> }></Route>
+
               <Route path="/register" exact component={() => <Register /> }></Route>
+              <Route path="/logout" exact component={() => <Logout /> }></Route>
+
+              <Route path="/vendor/home" exact component={ () => <VHome/> }></Route>
+              <Route path="/vendor/configs" exact component={ () => <VConfigs/> }></Route>
+              <Route path="/vendor/products" exact component={ () => <VProducts/> }></Route>
+              
               <Route path="/login" exact component={() => <Login /> }></Route>
-              <Route path="/" component={() => <Home /> }></Route>
+              <Route path="/" component={() => <Login /> }></Route>
           </Switch>
         </Router>
   
