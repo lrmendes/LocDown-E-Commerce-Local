@@ -60,7 +60,7 @@ function Register( props ) {
   const [senha, setSenha] = useState("");
 
 
-  async function handleRegister(e) {
+  async function handleLoginUser() {
 
     const data = 
     {
@@ -69,11 +69,45 @@ function Register( props ) {
     };
 
     try {
-        const response = await api.post('/auth/login', data);
-
+        console.log('enviou: ',data);
+        const response = await api.post('/auth/authenticate', data);
+        history.push({
+            pathname: "/user/home",
+            state: { call: 'Login bem sucedido!' }
+        });
     } catch (err) {
-        alert('Error ao tentar logar.');
+        console.log(err);
+        alert('Error ao tentar logar User.');
     }
+  }
+
+  async function handleLoginVendor() {
+
+    const data = 
+    {
+        "email": email,
+        "password": senha
+    };
+
+    try {
+        console.log('enviou: ',data);
+        const response = await api.post('/auth/authenticateVendor', data);
+        history.push({
+            pathname: "/vendor/home",
+            state: { call: 'Login bem sucedido!' }
+        });
+    } catch (err) {
+        console.log(err);
+        alert('Error ao tentar logar Vendor.');
+    }
+  }
+
+  function handleLogin() {
+      if (isClient) {
+          handleLoginUser();
+      } else {
+          handleLoginVendor();
+      }
   }
 
   return (
@@ -127,7 +161,7 @@ function Register( props ) {
             </Grid>
             </Paper>
             <Grid item style={{marginTop: 20, marginBottom: 20}}>
-                <button onClick={handleRegister} className={classes.submit} type="submit">Login</button>                    
+                <button onClick={handleLogin} className={classes.submit} type="submit">Login</button>                    
             </Grid>
         </Grid>
     </div>

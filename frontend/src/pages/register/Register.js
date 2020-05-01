@@ -70,7 +70,6 @@ function Register( props ) {
     })
    .catch((error)=> {
        alert('Verifique o cep digitado! O cep deve conter somente números!');
-       console.log(error);
    });
   }
 
@@ -141,17 +140,21 @@ function Register( props ) {
     };
 
     try {
-        const response = await api.post('/auth/register', data);
-        console.log(response.data);
+        const response = api.post('/auth/register', data);
+        alert('Cadastro Realizado!');
+        history.push({
+            pathname: "/login",
+            state: { call: 'Registro bem sucedido!' }
+        });
     } catch (err) {
-        alert('Error ao tentar registrar.');
+        alert('Erro ao tentar registrar! Tente novamente com outro email!');
     }
 
   }
 
   async function handleVendor() {
 
-    if (file != null || !file) {
+    if (file == null || !file) {
         return alert("Você deve enviar uma imagem!");
     }
 
@@ -189,12 +192,14 @@ function Register( props ) {
 
     try {
         const response = await api.post('/auth/registervendor', form, config);
+        //console.log(response);
+        alert('Cadastro Realizado!');
         history.push({
             pathname: "/login",
             state: { call: 'Registro bem sucedido!' }
         });
     } catch (err) {
-        alert('Error ao tentar registrar.');
+        alert('Error ao tentar registrar: ' + err);
     }
   }
 
