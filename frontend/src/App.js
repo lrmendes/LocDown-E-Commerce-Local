@@ -6,6 +6,9 @@ import VendorList from './pages/user/vendors/VendorsList';
 import VendorProducts from './pages/user/products/VendorProducts';
 import Products from './pages/user/products/Products';
 
+import Register from './pages/register/Register';
+import Login from './pages/login/Login';
+
 function App() {
 
   return (
@@ -17,6 +20,8 @@ function App() {
               <Route path="/empresa/:id" exact component={() => <VendorProducts /> }></Route>
               <Route path="/produto/:id" exact component={() => <Products /> }></Route>
               <Route path="/home" exact component={() => <Home /> }></Route>
+              <Route path="/register" exact component={() => <Register /> }></Route>
+              <Route path="/login" exact component={() => <Login /> }></Route>
               <Route path="/" component={() => <Home /> }></Route>
           </Switch>
         </Router>
