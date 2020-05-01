@@ -6,6 +6,10 @@ frontend/yarn.lock
 /.pnp
 .pnp.js
 
+backend/node_modules/
+backend/public/uploads/
+backend/yarn.lock
+
 # testing
 /coverage
 
