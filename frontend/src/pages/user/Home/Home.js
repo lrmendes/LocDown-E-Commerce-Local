@@ -41,10 +41,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const categories = [
-    {id: 0, name:'Roupas', route:'/categorias/1', icon:imgCat1 },
-    {id: 1, name:'Calçados', route:'/categorias/2', icon:imgCat2},
-    {id: 2, name:'Eletrônicos', route:'/categorias/3', icon:imgCat3},
-    {id: 3, name:'Brinquedos', route:'/categorias/4', icon:imgCat4},
+    {id: 0, name:'Roupas', route:'/categorias/0', icon:imgCat1 },
+    {id: 1, name:'Calçados', route:'/categorias/1', icon:imgCat2},
+    {id: 2, name:'Eletrônicos', route:'/categorias/2', icon:imgCat3},
+    {id: 3, name:'Brinquedos', route:'/categorias/3', icon:imgCat4},
 ];
 
 function Home( props ) {

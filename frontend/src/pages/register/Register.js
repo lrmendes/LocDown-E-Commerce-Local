@@ -162,6 +162,7 @@ function Register( props ) {
     {
         "name": name,
         "email": email,
+        "setor": setor,
         "endereco": [
             {"cep" : cep},
             {"logradouro": address.logradouro},

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -78,6 +78,13 @@ function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  const history = useHistory();
+
+  useEffect(() => {
+    if (localStorage.getItem('buyconta') != 1)
+      history.push('/');
+  });
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -96,10 +103,10 @@ function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
       <Divider />
       <Box mt={1} style={{textAlign: 'center'}}>
       <Typography>Bem vindo,</Typography>
-      <Typography className={classes.textData}>Lucas</Typography>
+      <Typography className={classes.textData}>{localStorage.getItem('buynome')}</Typography>
       <Box mt={1}>
       <Typography>Sua Região:</Typography>
-      <Typography className={classes.textData}>Ponta Grossa</Typography>
+      <Typography className={classes.textData}>{localStorage.getItem('buylocal')}</Typography>
       </Box>
       </Box>
       <Box mt={1}>

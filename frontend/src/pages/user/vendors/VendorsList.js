@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -9,6 +9,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 import vendorIcon from '../../../assets/vendorIcon.svg';
 import { Link } from "react-router-dom";
+import api from '../../../services/api';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,16 +40,16 @@ const useStyles = makeStyles((theme) => ({
 
 function idToCategory(id) {
     switch(id) {
-        case '1':
+        case '0':
             return "Roupa";
             break;
-        case '2':
+        case '1':
             return "Calçado";
             break;
-        case '3':
+        case '2':
             return "Eletrônicos";
             break;
-        case '4':
+        case '3':
             return "Brinquedos";
             break;
         default:
@@ -57,18 +58,47 @@ function idToCategory(id) {
     }
 }
 
-const vendors = [
+/*const vendors = [
     {id: 0, name: 'Gregory Store', address: 'Rua Porto Alegre, 33', picture: vendorIcon},
     {id: 1, name: 'Malu Vestidos', address: 'Avenida Brasil, 192', picture: vendorIcon},
     {id: 2, name: 'Veste Tudo', address: 'Avenida Aparecida da Sé, 559', picture: vendorIcon},
     {id: 3, name: 'Modas Brasil', address: 'Rua Curitiba, 45', picture: vendorIcon},
-]
+]*/
 
 function VendorList(props) {
     let { id } = useParams();
     let category = idToCategory(id);
     const { window } = props;
     const classes = useStyles();
+    
+    const hostIP = require('../../../services/hostIP.json');
+
+    const [vendors, setVendors] = useState([]);
+    const [notFound, setNotFound] = useState(false);
+    const [msg, setMsg] = useState("Buscando vendedores de sua região...");
+
+    useEffect(() => {
+
+        console.log("Chamou Vendedores Locais: ");
+        api.get('vendorlist', {
+            headers: {
+                Localidade: localStorage.getItem('buylocal'),
+                Categoria: id,
+            }
+        }).then(response => {
+            console.log("recebeu:", response.data);
+            if (!response.data.length) {
+                setNotFound(true);
+                console.log('entoru');
+                setMsg("Não foram encontrados vendedores dessa categoria em sua região.");
+            }
+            setVendors(response.data);
+        }).catch(err => {
+            //console.log(err);
+            setNotFound(true);
+            setMsg("Não foi possível realizar a comunicação com o servidor. Tente novamente!");
+        })
+    }, [id]);
 
     const theme = createMuiTheme();
 
@@ -99,17 +129,19 @@ function VendorList(props) {
         <div className={classes.toolbar} />
             <Grid container spacing={3}>
 
-                {vendors.map( ({id,name,address,picture}) => (
+                { !notFound && vendors.length
+                ? (
+                vendors.map( ({id,name,endereco,img}) => (
                     <Grid key={id} item xs={12} sm={6}>
                     <Link to={`/empresa/${id}`} style={{ textDecoration: 'none' }}>
                         <Paper className={classes.paper}>
                             <Grid container direction="row" justify="flex-start" alignItems="center">
-                                <img src={picture} className={classes.categoryImg} />
+                                <img src={hostIP.hostIP+img} className={classes.categoryImg} />
                                 <Grid item>
                                     <Box ml={2}>
                                     <ThemeProvider theme={theme}>
                                         <Typography variant="h4"  align="left">{name}</Typography>
-                                        <Typography variant="body1" align="left" style={{marginLeft: 2, marginTop: 3}}>{address}</Typography>
+                                        <Typography variant="body1" align="left" style={{marginLeft: 2, marginTop: 3}}>{endereco[1].logradouro},{endereco[5].numero} - {endereco[2].bairro}</Typography>
                                     </ThemeProvider>
                                     </Box>
                                 </Grid>
@@ -117,7 +149,11 @@ function VendorList(props) {
                         </Paper>
                     </Link>
                     </Grid>
-                ))}
+                ))
+                )
+                : <Typography variant="h6"  align="center">{msg}</Typography>
+                }
+
             </Grid>
         </main>
         </div>

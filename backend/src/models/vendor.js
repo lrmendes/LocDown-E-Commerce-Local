@@ -9,8 +9,12 @@ const VendorSchema = new mongoose.Schema({
     email: {
         type: String,
         unique: true,
-        required: true,
+        require: true,
         lowercase: true,
+    },
+    setor: {
+        type: Number,
+        require: true
     },
     endereco: [
         {
@@ -47,7 +51,7 @@ const VendorSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        require: true,
         select: false,
     },
 });

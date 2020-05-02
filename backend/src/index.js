@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
 
 require('./controller/authController')(app);
 require('./controller/authVendorController')(app);
+require('./controller/vendorList')(app);
 
 
 app.listen(3333);
