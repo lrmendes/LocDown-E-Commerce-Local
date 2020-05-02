@@ -86,6 +86,8 @@ function Register(props) {
             localStorage.setItem('buyconta', 2);
             localStorage.setItem('buylocal', response.data.vendor.endereco[3].localidade);
             localStorage.setItem('buynome', response.data.vendor.name);
+            localStorage.setItem('buyID', response.data.vendor._id);
+            localStorage.setItem('buysetor', response.data.vendor.setor);
 
             history.push({
                 pathname: "/vendor/home",

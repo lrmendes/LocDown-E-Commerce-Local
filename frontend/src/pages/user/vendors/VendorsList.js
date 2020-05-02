@@ -11,6 +11,8 @@ import vendorIcon from '../../../assets/vendorIcon.svg';
 import { Link } from "react-router-dom";
 import api from '../../../services/api';
 
+const hostIP = require('../../../services/hostIP.json');
+
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -58,20 +60,11 @@ function idToCategory(id) {
     }
 }
 
-/*const vendors = [
-    {id: 0, name: 'Gregory Store', address: 'Rua Porto Alegre, 33', picture: vendorIcon},
-    {id: 1, name: 'Malu Vestidos', address: 'Avenida Brasil, 192', picture: vendorIcon},
-    {id: 2, name: 'Veste Tudo', address: 'Avenida Aparecida da Sé, 559', picture: vendorIcon},
-    {id: 3, name: 'Modas Brasil', address: 'Rua Curitiba, 45', picture: vendorIcon},
-]*/
-
 function VendorList(props) {
     let { id } = useParams();
     let category = idToCategory(id);
     const { window } = props;
     const classes = useStyles();
-    
-    const hostIP = require('../../../services/hostIP.json');
 
     const [vendors, setVendors] = useState([]);
     const [notFound, setNotFound] = useState(false);
@@ -79,17 +72,17 @@ function VendorList(props) {
 
     useEffect(() => {
 
-        console.log("Chamou Vendedores Locais: ");
+        //console.log("Chamou Vendedores Locais: ");
         api.get('vendorlist', {
             headers: {
                 Localidade: localStorage.getItem('buylocal'),
                 Categoria: id,
             }
         }).then(response => {
-            console.log("recebeu:", response.data);
+            //console.log("recebeu:", response.data);
             if (!response.data.length) {
                 setNotFound(true);
-                console.log('entoru');
+                //console.log('entoru');
                 setMsg("Não foram encontrados vendedores dessa categoria em sua região.");
             }
             setVendors(response.data);
@@ -131,9 +124,9 @@ function VendorList(props) {
 
                 { !notFound && vendors.length
                 ? (
-                vendors.map( ({id,name,endereco,img}) => (
-                    <Grid key={id} item xs={12} sm={6}>
-                    <Link to={`/empresa/${id}`} style={{ textDecoration: 'none' }}>
+                vendors.map( ({_id,name,endereco,img}) => (
+                    <Grid key={_id} item xs={12} sm={6}>
+                    <Link to={`/empresa/${_id}/${name}`} style={{ textDecoration: 'none' }}>
                         <Paper className={classes.paper}>
                             <Grid container direction="row" justify="flex-start" alignItems="center">
                                 <img src={hostIP.hostIP+img} className={classes.categoryImg} />

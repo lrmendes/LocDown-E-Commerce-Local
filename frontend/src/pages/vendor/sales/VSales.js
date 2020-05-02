@@ -7,12 +7,6 @@ import SidebarVendor from '../../../components/SidebarVendor';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Link } from "react-router-dom";
 
-
-import imgCat1 from '../../../assets/category0.svg';
-import imgCat2 from '../../../assets/category1.svg';
-import imgCat3 from '../../../assets/category2.svg';
-import imgCat4 from '../../../assets/category3.svg';
-
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
@@ -40,14 +34,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const categories = [
-    {id: 0, name:'Roupas', route:'/categorias/0', icon:imgCat1 },
-    {id: 1, name:'Calçados', route:'/categorias/1', icon:imgCat2},
-    {id: 2, name:'Eletrônicos', route:'/categorias/2', icon:imgCat3},
-    {id: 3, name:'Brinquedos', route:'/categorias/3', icon:imgCat4},
-];
-
-function VHome( props ) {
+function VSales( props ) {
   
   const { window } = props;
   const classes = useStyles();
@@ -76,30 +63,14 @@ function VHome( props ) {
   return (
     <div className={classes.root}>
     <CssBaseline />
-    <SidebarVendor currentPage={0} title={"Inicio"} />
+    <SidebarVendor currentPage={2} title={"Minhas Vendas"} />
       <main className={classes.content}>
       <div className={classes.toolbar} />
       <Grid container justify="center" alignItems="center">
-          <Box pt={2} pb={4}>
-          <Typography variant="h4">O que deseja vender hoje?</Typography>
-          </Box>
-        </Grid>
-        <Grid container spacing={3}>
-            {categories.map(({id, name, route, icon}) => (
-                <Grid key={id} item xs={6} sm={3}>
-                    <Link to={route} style={{ textDecoration: 'none' }}>
-                        <Paper className={classes.paper} >
-                            <img src={icon} className={classes.categoryImg} />
-                            <ThemeProvider theme={theme}>
-                                <Typography variant="h4">{name}</Typography>
-                            </ThemeProvider>
-                        </Paper>
-                    </Link>
-                </Grid>
-            ))}    
-        </Grid>
-        </main>
-        </div>
+          <Typography variant="h4">Tela de Vendas do Vendedor</Typography>
+      </Grid>
+      </main>
+      </div>
   );
 }
-export default VHome;
+export default VSales;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {useParams} from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -8,13 +8,13 @@ import Sidebar from '../../../components/Sidebar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css'; 
-
-
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
-
-import productIcon from '../../../assets/productIcon.svg';
+import api from '../../../services/api';
 import { Link } from "react-router-dom";
+
+
+const hostIP = require('../../../services/hostIP.json');
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const product = {
+/*const product = {
     id: 0,
     name: '' ,
     sectorId: 0,
@@ -75,20 +75,51 @@ const product = {
         { tipo: 36, quantidade: 1 },
         { tipo: 36, quantidade: 4 },
     ]
-};
-    
-
-const images = product.pictures;
+};*/
 
 function Products(props) {
+    let { id } = useParams();
+    console.log(id);
+
     const [photos,setPhotos] = useState({
         photoIndex: 0,
         isOpen: false,
-    })
+    });
 
-    let { id } = useParams();
-    let vendorName = id;
-    const { window } = props;
+    const [data, setData] = useState({
+        product: null,
+        vendor: null,
+    });
+
+    const [notFound, setNotFound] = useState(false);
+    const [msg, setMsg] = useState("Buscando dados do produto...");
+    const [images,setImages] = useState([]);
+
+    useEffect(() => {
+        //console.log("Chamou Vendedores Locais: ");
+        api.get('productData', {
+            headers: {
+                productid: id,
+            }
+        }).then(response => {
+            console.log("recebeu:", response.data);
+            console.log("recebeu2:", response.data.product[0]);
+            console.log("recebeu3:", response.data.vendor[0]);
+            if (!response.data) {
+                console.log("entrou aqui");
+                setNotFound(true);
+                //console.log('entoru');
+                setMsg("Não foram encontrados vendedores dessa categoria em sua região.");
+            }
+            setData( { product: response.data.product[0], vendor: response.data.vendor[0] } );
+            setImages([hostIP.hostIP+response.data.product[0].pictures[0], hostIP.hostIP+response.data.product[0].pictures[1]]);
+        }).catch(err => {
+            console.log(err);
+            setNotFound(true);
+            setMsg("Não foi possível realizar a comunicação com o servidor. Tente novamente!");
+        })
+    }, [id]);
+
     const classes = useStyles();
 
     const theme = createMuiTheme();
@@ -118,10 +149,12 @@ function Products(props) {
         <Sidebar currentPage={0} title={`Produto: ${id}` } />
         <main className={classes.content}>
         <div className={classes.toolbar} />
+        { !notFound && data.product != null
+        ? (
             <Grid container spacing={3}>
             <Grid item xs={12} sm={6}>
                     <Paper className={classes.customBox} onClick={() => setPhotos({...photos, isOpen: true })}>
-                        <img src={images[0]} className={classes.categoryImg} />
+                        <img src={images[photos.photoIndex]} className={classes.categoryImg} />
                     </Paper>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -132,38 +165,57 @@ function Products(props) {
                         </Grid>
                        
                         <Divider style={{marginBottom: 10}} />
-                        
-                        { product.attributes.map( (attribute) => (
-                            <Grid key={Object.keys(attribute)} item style={{marginBottom: 10, textAlign: 'left'}}>
-                                <Typography variant={Object.keys(attribute) == 'Observação' ? "body1" : "h6"} ><b>{Object.keys(attribute)}:</b> {attribute[Object.keys(attribute)]}</Typography>
-                            </Grid>
-                        )) }
+
+                        <Grid item style={{marginBottom: 10}}>
+                            <Typography variant="h6" color="textPrimary" align="left"><b>{data.product.name}</b></Typography>
+                        </Grid>
+
+                        <Grid item style={{marginBottom: 10}}>
+                            <Typography variant="body1" color="textPrimary" align="left"><b>Descrição: </b>{data.product.desc}</Typography>
+                        </Grid>
+
+                        <Divider style={{marginBottom: 10}} />
+
+                        <Grid item style={{marginBottom: 10}}>
+                            <Typography variant="body1" color="textPrimary" align="left"><b>Vendedor: </b>{data.vendor.name}</Typography>
+                        </Grid>
+
+                        <Grid item style={{marginBottom: 10}}>
+                            <Typography variant="body1" color="textPrimary" align="left"><b>Endereço: </b>{data.vendor.endereco[1].logradouro},
+                            {data.vendor.endereco[5].numero} - {data.vendor.endereco[2].bairro}.</Typography>
+                        </Grid>
+
+                        {data.product.stock.length == 1
+                        ?   <Grid item style={{marginBottom: 10}}>
+                                <Typography variant="body1" color="textPrimary" align="left"><b>Estoque Disponível: </b>{data.product.stock[0].quantidade}</Typography>
+                             </Grid>
+                        : null }
+
                         <Divider style={{marginBottom: 10}} />
                         <Grid container direction="row" alignItems="flex-end" justify="space-between" spacing={2}>
                             <Grid item xs={12} sm={4}>
-                                <Typography variant="h6" color="textPrimary">R$ {product.preco}</Typography>
+                                <Typography variant="h5" color="textPrimary">R$ {data.product.price}</Typography>
                             </Grid>
                             <Grid item xs={6} sm={4}>
-                                { product.estoque.length > 1 
-                                ? (
+                            { data.product.stock.length > 1 
+                                ? 
                                     <FormControl className={classes.formControl}>
                                     <Select
-                                        defaultValue={""}
+                                      defaultValue={""}
                                       displayEmpty
                                       className={classes.selectEmpty}
                                       inputProps={{ 'aria-label': 'Without label' }}
                                     >
-                                      <MenuItem value="" disabled>
-                                        Selecionar
-                                      </MenuItem>
-                                      <MenuItem value={10}>44</MenuItem>
-                                      <MenuItem value={20}>45</MenuItem>
-                                      <MenuItem value={30}>46</MenuItem>
+                                    <MenuItem value="" disabled>Tipo do Produto</MenuItem>
+                                    {data.product.stock.map((item) => (
+                                      <MenuItem key={item.tipo} value={item.tipo}>{item.tipo} ( {item.quantidade} disponível )</MenuItem>
+                                    ))}
+
                                     </Select>
-                                    <FormHelperText>Tamanho do Produto</FormHelperText>
                                   </FormControl>
-                                )
+                                
                                 : <Typography variant="body1">Produto com Tamanho Unico</Typography> }
+
                             </Grid>
                             <Grid item xs={6} sm={4}>
                             <Link to={`/produto/X`} style={{ textDecoration: 'none' }}>
@@ -174,6 +226,10 @@ function Products(props) {
                     </Grid>
                 </Paper>
             </Grid>
+            </Grid>
+        )
+        : <Typography variant="h6"  align="center">{msg}</Typography>
+        }
 
     {photos.isOpen && (
         <Lightbox
@@ -186,9 +242,8 @@ function Products(props) {
         />
     )}
                 
-            </Grid>
-        </main>
-        </div>
+    </main>
+    </div>
 
     );
 }

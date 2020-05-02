@@ -10,8 +10,9 @@ import Register from './pages/register/Register';
 import Login from './pages/login/Login';
 import Logout from './pages/logout/Logout';
 
-import VProducts from './pages/vendor/products/VProducts';
 import VHome from './pages/vendor/home/VHome';
+import VProducts from './pages/vendor/products/VProducts';
+import VSales from './pages/vendor/sales/VSales';
 import VConfigs from './pages/vendor/configs/VConfigs';
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
           
               <Route path="/configs" exact component={ () => <Configs /> }></Route>
               <Route path="/categorias/:id" exact component={() => <VendorList /> }></Route>
-              <Route path="/empresa/:id" exact component={() => <VendorProducts /> }></Route>
+              <Route path="/empresa/:vendorId/:vendorName" exact component={() => <VendorProducts /> }></Route>
               <Route path="/produto/:id" exact component={() => <Products /> }></Route>
               <Route path="/home" exact component={() => <Home /> }></Route>
 
@@ -30,8 +31,9 @@ function App() {
               <Route path="/logout" exact component={() => <Logout /> }></Route>
 
               <Route path="/vendor/home" exact component={ () => <VHome/> }></Route>
-              <Route path="/vendor/configs" exact component={ () => <VConfigs/> }></Route>
               <Route path="/vendor/products" exact component={ () => <VProducts/> }></Route>
+              <Route path="/vendor/sales" exact component={ () => <VSales /> }></Route>
+              <Route path="/vendor/configs" exact component={ () => <VConfigs/> }></Route>
               
               <Route path="/login" exact component={() => <Login /> }></Route>
               <Route path="/" component={() => <Login /> }></Route>

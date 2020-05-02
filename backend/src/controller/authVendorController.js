@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const authConfig = require('../config/auth.json');
 
 const storage = multer.diskStorage({
-    destination: "./public/uploads/",
+    destination: "./public/uploads/vendors/",
     filename: function(req, file, cb){
        cb(null,"IMAGE-" + Date.now() + path.extname(file.originalname));
     }
@@ -28,7 +28,7 @@ function generateToken(params = {}) {
 
 router.post('/registervendor', async(req,res) => {
     upload(req, res, async(err) => {
-        img = '/uploads/' + req.file.filename;
+        img = '/uploads/vendors/' + req.file.filename;
         resultado = JSON.parse(req.body.data);
 
         if(!err) {

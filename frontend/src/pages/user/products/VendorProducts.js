@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState,useEffect} from 'react';
 import {useParams} from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -7,8 +7,11 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Sidebar from '../../../components/Sidebar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
+import api from '../../../services/api';
 import productIcon from '../../../assets/productIcon.svg';
 import { Link } from "react-router-dom";
+
+const hostIP = require('../../../services/hostIP.json');
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -30,22 +33,44 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(3),
     },
     categoryImg: {
-        width: '30%',
+        width: '50px',
+        height: '50px',
+        '@media (min-width:600px)': {
+            width: '100px',
+            height: '100px',
+        },
     },
 }));
 
-const products = [
-    {id: 0, name: 'Adidas Shot', attribute: 'Masculino', price: 199.99, picture: productIcon},
-    {id: 1, name: 'Nike Max', attribute: 'Feminino', price: 299.99, picture: productIcon},
-    {id: 2, name: 'Asics Gel Rocket', attribute: 'Masculino', price: 189.90, picture: productIcon},
-    {id: 3, name: 'Adidas Retro', attribute: 'Masculino', price: 250.00, picture: productIcon}
-]
-
 function VendorProducts(props) {
-    let { id } = useParams();
-    let vendorName = id;
+    let { vendorId, vendorName } = useParams();
+
     const { window } = props;
     const classes = useStyles();
+
+    const [products, setProducts] = useState([]);
+    const [notFound, setNotFound] = useState(false);
+    const [msg, setMsg] = useState("Buscando produtos do vendedor...");
+
+    useEffect(() => {
+
+        //console.log("Chamou Vendedores Locais: ");
+        api.get('vendorProducts', {
+            headers: {
+                vendorId: vendorId
+            }
+        }).then(response => {
+            
+            if (!response.data.length) {
+                setNotFound(true);
+                setMsg("Não foram encontrados produtos desse vendedor.");
+            }
+            setProducts(response.data);
+        }).catch(err => {
+            setNotFound(true);
+            setMsg("Não foi possível realizar a comunicação com o servidor. Tente novamente!");
+        })
+    }, [vendorId]);
 
     const theme = createMuiTheme();
 
@@ -71,22 +96,25 @@ function VendorProducts(props) {
     return (
         <div className={classes.root}>
         <CssBaseline />
-        <Sidebar currentPage={0} title={`Loja ${id}` } />
+        <Sidebar currentPage={0} title={`Loja ${vendorName}` } />
         <main className={classes.content}>
         <div className={classes.toolbar} />
             <Grid container spacing={3}>
 
-                {products.map(({id,name,attribute, price, picture}) => ( 
-                    <Grid key={id} item xs={12} sm={4}>
+            { !notFound && products.length
+                ? (
+                products.map(({_id,pictures,name,price,desc}) => ( 
+                    (desc.length > 50 ? desc = desc.substring(0,50) + "..." : null),
+                    <Grid key={_id} item xs={12} sm={4}>
                         <Paper className={classes.paper}>
                             <Grid container direction="row" justify="flex-start">
-                                <img src={picture} className={classes.categoryImg} />
+                                <img src={hostIP.hostIP+pictures[0]} className={classes.categoryImg} />
                                 <Grid item>
                                     <Grid container direction="row" alignItems="flex-start">
                                         <Box ml={2}>
                                         <ThemeProvider theme={theme}>
                                             <Typography variant="h4"  align="left" style={{marginTop: 3}}>{name}</Typography>
-                                            <Typography variant="body2" align="left" style={{marginLeft: 2, marginTop: 3}}>{attribute}</Typography>
+                                            <Typography variant="body2" align="left" style={{marginLeft: 2, marginTop: 3}}>{desc}</Typography>
                                         </ThemeProvider>
                                         </Box>
                                     </Grid>
@@ -100,7 +128,7 @@ function VendorProducts(props) {
                                     <Typography variant="h4" style={{marginLeft: 5}}>R$ {price}</Typography>
                                 </Grid>
                                 <Grid item>
-                                    <Link to={`/produto/${id}`} style={{ textDecoration: 'none' }}>
+                                    <Link to={`/produto/${_id}`} style={{ textDecoration: 'none' }}>
                                         <Button variant="contained" color="primary">Visualizar</Button>
                                     </Link>
                                 </Grid>
@@ -108,7 +136,9 @@ function VendorProducts(props) {
                             </Grid>
                         </Paper>
                     </Grid>
-                ))}
+                )))
+                : <Typography variant="h6"  align="center">{msg}</Typography>
+            }
 
                 
             </Grid>

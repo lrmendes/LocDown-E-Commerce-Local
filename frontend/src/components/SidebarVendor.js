@@ -17,12 +17,13 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
-import ViewHeadlineOutlinedIcon from '@material-ui/icons/ViewHeadlineOutlined';
-
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
-import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
+
+import AddShoppingCartOutlinedIcon from '@material-ui/icons/AddShoppingCartOutlined';
 import { Link } from "react-router-dom";
 import { Box } from "@material-ui/core";
 import { useHistory } from 'react-router-dom';
@@ -64,17 +65,17 @@ const useStyles = makeStyles((theme) => ({
     color: '#000000',
   },
   sidebarItemCurrent: {
-    color: '#7f00ff',
+    color: '#008cff',
   },
   customBar: {
-    backgroundColor: '#7f00ff',
+    backgroundColor: '#008cff',
   },
   textData: {
-    color: '#7f00ff',
+    color: '#008cff',
   }
 }));
 
-function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
+function SidebarVendor( {currentPage = 0, title = 'DashBoard'}, ...props) {
   const { window } = props;
   const classes = useStyles();
   const theme = useTheme();
@@ -83,7 +84,7 @@ function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
   const history = useHistory();
 
   useEffect(() => {
-    if (localStorage.getItem('buyconta') != 1)
+    if (localStorage.getItem('buyconta') != 2)
       history.push('/');
   },[currentPage]);
 
@@ -92,16 +93,16 @@ function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
   };
 
   const menuUser = [
-    { name: 0, label: 'Inicio', route: '/home', Icon: HomeOutlinedIcon },
-    { name: 1, label: 'Pedidos', route: '/inventory', Icon: ViewHeadlineOutlinedIcon},
-    { name: 2, label: 'Carrinho', route: '/sales', Icon: ShoppingCartOutlinedIcon},
-    { name: 3, label: 'Configurações', route: '/configs', Icon: SettingsOutlinedIcon},
+    { name: 0, label: 'Inicio', route: '/vendor/home', Icon: HomeOutlinedIcon },
+    { name: 1, label: 'Produtos', route: '/vendor/products', Icon: ArchiveOutlinedIcon},
+    { name: 2, label: 'Vendas', route: '/vendor/sales', Icon: AttachMoneyIcon},
+    { name: 3, label: 'Configurações', route: '/vendor/configs', Icon: SettingsOutlinedIcon},
     { name: 4, label: 'Sair', route: '/logout', Icon: ExitToAppOutlinedIcon},
   ]
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} style={{  display: 'flex', justifyContent: 'center', alignItems: 'center'}}><Typography variant={'h6'} style={{color: '#7f00ff'}}>BUY BUY</Typography></div>
+      <div className={classes.toolbar} style={{  display: 'flex', justifyContent: 'center', alignItems: 'center'}}><Typography variant={'h6'} style={{color: '#008cff'}}>BUY BUY</Typography></div>
       <Divider />
       <Box mt={1} style={{textAlign: 'center'}}>
       <Typography>Bem vindo,</Typography>
@@ -185,7 +186,7 @@ function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
   );
 }
 
-Sidebar.propTypes = {
+SidebarVendor.propTypes = {
   /**
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
@@ -193,4 +194,4 @@ Sidebar.propTypes = {
   window: PropTypes.func,
 };
 
-export default Sidebar;
+export default SidebarVendor;
