@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react';
 import {useParams} from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Paper, Box, Button, Divider, MenuItem, Select } from '@material-ui/core';
+import { Grid, Paper, Box, Button, Divider, MenuItem, Select, TextField } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Sidebar from '../../../components/Sidebar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -12,6 +12,9 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import api from '../../../services/api';
 import { Link } from "react-router-dom";
+
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 
 const hostIP = require('../../../services/hostIP.json');
@@ -54,32 +57,21 @@ const useStyles = makeStyles((theme) => ({
             width: '50%',
         }
     },
+    dialogCustom: {
+        width: '90%',
+        '@media (min-width:600px)': {
+            width: '400px',
+        },
+        [theme.breakpoints.up('md')]: {
+            width: '400px',
+        }
+    }
 }));
-
-/*const product = {
-    id: 0,
-    name: '' ,
-    sectorId: 0,
-    vendorId: '',
-    preco:  199.99,
-    attributes: [
-        { Gênero: 'XX' },
-        { Cor: 'YY' },
-        { Observação: 'Um texto muito grande Um texto muito grande Um texto muito grande Um texto muito grande Um texto muito grande'}
-    ],
-    pictures: [
-        'http://192.168.1.28:3000/uploads/empresaID_produtoID_img1.jpg',
-        'http://192.168.1.28:3000/uploads/empresaID_produtoID_img2.jpg',
-        'http://192.168.1.28:3000/uploads/empresaID_produtoID_img3.jpg' ],
-    estoque: [
-        { tipo: 36, quantidade: 1 },
-        { tipo: 36, quantidade: 4 },
-    ]
-};*/
 
 function Products(props) {
     let { id } = useParams();
     console.log(id);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     const [photos,setPhotos] = useState({
         photoIndex: 0,
@@ -120,6 +112,11 @@ function Products(props) {
         })
     }, [id]);
 
+    function generateOrder() {
+        alert("Compra Realizada com Sucesso!");
+        setDialogOpen(false);
+    }
+
     const classes = useStyles();
 
     const theme = createMuiTheme();
@@ -146,7 +143,7 @@ function Products(props) {
     return (
         <div className={classes.root}>
         <CssBaseline />
-        <Sidebar currentPage={0} title={`Produto: ${id}` } />
+        <Sidebar currentPage={0} title={data.product != null ? data.product.name : "Produto"} />
         <main className={classes.content}>
         <div className={classes.toolbar} />
         { !notFound && data.product != null
@@ -218,9 +215,7 @@ function Products(props) {
 
                             </Grid>
                             <Grid item xs={6} sm={4}>
-                            <Link to={`/produto/X`} style={{ textDecoration: 'none' }}>
-                                <Button variant="contained" color="primary">Comprar</Button>
-                            </Link>
+                                <Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>Comprar</Button>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -231,6 +226,8 @@ function Products(props) {
         : <Typography variant="h6"  align="center">{msg}</Typography>
         }
 
+    
+
     {photos.isOpen && (
         <Lightbox
         mainSrc={images[photos.photoIndex]}
@@ -240,11 +237,39 @@ function Products(props) {
         onMovePrevRequest={() => setPhotos({...photos, photoIndex: (photos.photoIndex + images.length - 1) % images.length }) }
         onMoveNextRequest={() => setPhotos({...photos, photoIndex: ((photos.photoIndex + 1) % images.length) }) }
         />
-    )}
-                
+    )}   
+
+        <Dialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">Confirmar Compra</DialogTitle>
+        <Box mr={4}>
+        <DialogContent>
+          <Box mb={1}>
+          <Typography component={'span'} style={{marginTop: 10}} variant="body1" color="textPrimary" align="left"><b>Produto: </b>{data.product != null ? data.product.name : "Produto"}</Typography>
+          </Box>
+          <Box mb={1}>
+          <Typography component={'span'} style={{marginTop: 10}} variant="body1" color="textPrimary" align="left"><b>Tipo: </b>{data.product != null ? data.product.stock[0].tipo : "Tipo"}</Typography>
+          </Box>
+          <Box mb={1}>
+          <Typography component={'span'} style={{marginTop: 10}} variant="body1" color="textPrimary" align="left"><b>Valor: </b>R$ {data.product != null ? data.product.price : "Preco"}</Typography>
+          </Box>
+        </DialogContent>
+        </Box>
+        <DialogActions>
+          <Button onClick={() => setDialogOpen(false)} color="primary">
+            Cancelar
+          </Button>
+          <Button onClick={() => { generateOrder() }} color="primary" variant="contained" >
+            Adicionar
+          </Button>
+          </DialogActions>
+        </Dialog>
+
     </main>
     </div>
-
     );
 }
 

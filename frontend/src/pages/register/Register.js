@@ -2,17 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Box, Button, Input, InputLabel, TextField, Typography, Select } from '@material-ui/core';
-import { CssBaseline, Container, Avatar, FormControlLabel, Checkbox, MenuItem, Link } from '@material-ui/core';
+import { CssBaseline, Container, Avatar, FormControlLabel, Checkbox, MenuItem } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import CheckIcon from '@material-ui/icons/Check';
 import { green } from '@material-ui/core/colors';
 import axios from 'axios';
+import { Link } from "react-router-dom";
 
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 import FormControl from '@material-ui/core/FormControl';
+import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
+
 import api from '../../services/api';
 
 const useStyles = makeStyles((theme) => ({
@@ -360,9 +363,9 @@ function Register(props) {
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <Link href="#" variant="body2">
-                                Já possui uma conta? Entrar
-            </Link>
+                            <Link  to={'/login'} style={{ textDecoration: 'none' }} >
+                                <Button style={{textDecoration: 'none', color: 'blue'}} endIcon={<ExitToAppOutlinedIcon />}>Já possui uma conta? Entrar</Button>
+                            </Link>
                         </Grid>
                     </Grid>
                 </form>

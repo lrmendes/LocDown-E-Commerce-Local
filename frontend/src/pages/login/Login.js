@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { CssBaseline, Grid, Button, TextField, Typography, Container, Avatar, FormControlLabel, Checkbox, Link } from '@material-ui/core';
+import { CssBaseline, Grid, Button, TextField, Typography, Container, Avatar, FormControlLabel, Checkbox } from '@material-ui/core';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-
+import { Link } from "react-router-dom";
 import api from '../../services/api';
+
+import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -35,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function Register(props) {
+function Login(props) {
     const classes = useStyles();
 
     const history = useHistory();
@@ -176,13 +178,11 @@ function Register(props) {
           </Button>
                     <Grid container>
                         <Grid item xs>
-                            <Link href="#" variant="body2">
-                                Esqueceu a senha?
-              </Link>
+                            
                         </Grid>
                         <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Cadastrar-se "}
+                            <Link  to={'/register'} style={{ textDecoration: 'none' }} >
+                                <Button style={{textDecoration: 'none', color: 'blue'}} endIcon={<ExitToAppOutlinedIcon />}>Não possui conta? Registrar</Button>
                             </Link>
                         </Grid>
                     </Grid>
@@ -191,4 +191,4 @@ function Register(props) {
         </Container>
     );
 }
-export default Register;
+export default Login;

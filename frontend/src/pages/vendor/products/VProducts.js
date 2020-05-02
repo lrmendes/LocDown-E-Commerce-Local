@@ -136,7 +136,7 @@ function VProducts( props ) {
   }
 
   async function handleRegisterSend() {
-    console.log("Passou nas validações");
+    //console.log("Passou nas validações");
 
     const data =
         {
@@ -168,13 +168,14 @@ function VProducts( props ) {
 
     try {
 
-      console.log("enviou:",data);
+      //console.log("enviou:",data);
       const response = await api.post('/vendorAddProduct', form, config);
-      console.log("recebeu");
-      console.log(response);
+      //console.log("recebeu");
+      alert("O Produto foi Cadastrado!");
+      window.location.reload();
 
     } catch (err) {
-        alert('Error ao tentar registrar: ' + err);
+        alert('Erro ao tentar registrar: ' + err);
     }
 
   }

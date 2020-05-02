@@ -115,7 +115,7 @@ function Configs( props ) {
   return (
     <div className={classes.root}>
     <CssBaseline />
-    <Sidebar currentPage={3} title={"Configurações"} />
+    <Sidebar currentPage={2} title={"Configurações"} />
       <main className={classes.content}>
       <div className={classes.toolbar} />
         <Grid container spacing={3}>

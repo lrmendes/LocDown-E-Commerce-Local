@@ -93,10 +93,9 @@ function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
 
   const menuUser = [
     { name: 0, label: 'Inicio', route: '/home', Icon: HomeOutlinedIcon },
-    { name: 1, label: 'Pedidos', route: '/inventory', Icon: ViewHeadlineOutlinedIcon},
-    { name: 2, label: 'Carrinho', route: '/sales', Icon: ShoppingCartOutlinedIcon},
-    { name: 3, label: 'Configurações', route: '/configs', Icon: SettingsOutlinedIcon},
-    { name: 4, label: 'Sair', route: '/logout', Icon: ExitToAppOutlinedIcon},
+    { name: 1, label: 'Pedidos', route: '/orders', Icon: ViewHeadlineOutlinedIcon},
+    { name: 2, label: 'Configurações', route: '/configs', Icon: SettingsOutlinedIcon},
+    { name: 3, label: 'Sair', route: '/logout', Icon: ExitToAppOutlinedIcon},
   ]
 
   const drawer = (
