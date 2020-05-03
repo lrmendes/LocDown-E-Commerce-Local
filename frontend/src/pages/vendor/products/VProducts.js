@@ -8,6 +8,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import { Link } from "react-router-dom";
 import api from '../../../services/api';
 
+import { useHistory } from 'react-router-dom';
 import { Button, Input, InputLabel, TextField, Select, IconButton } from '@material-ui/core';
 import { Container, Avatar, FormControlLabel, Checkbox, MenuItem } from '@material-ui/core';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
@@ -83,6 +84,8 @@ function VProducts( props ) {
     tipo: "",
     quantidade: 0,
   })
+
+  const history = useHistory();
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -172,7 +175,8 @@ function VProducts( props ) {
       const response = await api.post('/vendorAddProduct', form, config);
       //console.log("recebeu");
       alert("O Produto foi Cadastrado!");
-      window.location.reload();
+      
+      history.push('/vendor/home');
 
     } catch (err) {
         alert('Erro ao tentar registrar: ' + err);

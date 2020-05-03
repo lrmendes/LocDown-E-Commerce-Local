@@ -80,6 +80,8 @@ function Register(props) {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [senha, setSenha] = useState("");
+    
+    const [whats, setWhats] = useState("");
 
     const [cep, setCep] = useState("");
     const [address, setAddress] = useState(null);
@@ -127,6 +129,7 @@ function Register(props) {
         {
             "name": name,
             "email": email,
+            "whatsapp": whats,
             "endereco": [
                 { "cep": cep },
                 { "logradouro": address.logradouro },
@@ -161,6 +164,7 @@ function Register(props) {
         {
             "name": name,
             "email": email,
+            "whatsapp": whats,
             "setor": setor,
             "endereco": [
                 { "cep": cep },
@@ -251,6 +255,18 @@ function Register(props) {
                                 name="email"
                                 autoComplete="email"
                                 onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                variant="outlined"
+                                required
+                                fullWidth
+                                id="whats"
+                                label="Whatsapp (DDD+Numero)"
+                                type="number"
+                                name="whats"
+                                onChange={(e) => setWhats(e.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12}>

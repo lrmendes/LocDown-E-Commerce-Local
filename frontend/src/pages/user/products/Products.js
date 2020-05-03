@@ -283,7 +283,7 @@ function Products(props) {
             Cancelar
           </Button>
           <Button onClick={() => { generateOrder() }} color="primary" variant="contained" >
-            Adicionar
+            Comprar
           </Button>
           </DialogActions>
         </Dialog>

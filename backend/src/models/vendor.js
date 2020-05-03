@@ -12,6 +12,10 @@ const VendorSchema = new mongoose.Schema({
         require: true,
         lowercase: true,
     },
+    whatsapp: {
+        type: String,
+        require: true
+    },
     setor: {
         type: Number,
         require: true

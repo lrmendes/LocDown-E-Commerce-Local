@@ -12,6 +12,10 @@ const UserSchema = new mongoose.Schema({
         required: true,
         lowercase: true,
     },
+    whatsapp: {
+        type: String,
+        require: true
+    },
     endereco: [
         {
             _id:false,
