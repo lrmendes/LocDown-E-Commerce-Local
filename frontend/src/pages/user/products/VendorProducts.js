@@ -1,14 +1,17 @@
-import React, {useState,useEffect} from 'react';
-import {useParams} from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { useParams } from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Paper, Box, Button, Divider } from '@material-ui/core';
+import { Grid, Paper, Box, Button, Divider, Card } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Sidebar from '../../../components/Sidebar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+
 import api from '../../../services/api';
-import productIcon from '../../../assets/productIcon.svg';
 import { Link } from "react-router-dom";
 
 const hostIP = require('../../../services/hostIP.json');
@@ -16,7 +19,7 @@ const hostIP = require('../../../services/hostIP.json');
 const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
-      },
+    },
     paper: {
         padding: theme.spacing(2),
         textAlign: 'center',
@@ -40,6 +43,24 @@ const useStyles = makeStyles((theme) => ({
             height: '100px',
         },
     },
+    card: {
+        display: 'flex',
+        width: '100%',
+        paddingLeft: '10px',
+    },
+    cardDetails: {
+        flex: 1,
+    },
+    cardItem: {
+        marginTop: '4px',
+    },
+    cardMedia: {
+        
+        alignSelf: 'center',
+        width: '64px',
+        height: '64px',
+        marginBottom: '4px',
+    },
 }));
 
 function VendorProducts(props) {
@@ -60,7 +81,7 @@ function VendorProducts(props) {
                 vendorId: vendorId
             }
         }).then(response => {
-            
+
             if (!response.data.length) {
                 setNotFound(true);
                 setMsg("Não foram encontrados produtos desse vendedor.");
@@ -95,54 +116,57 @@ function VendorProducts(props) {
 
     return (
         <div className={classes.root}>
-        <CssBaseline />
-        <Sidebar currentPage={0} title={`Loja ${vendorName}` } />
-        <main className={classes.content}>
-        <div className={classes.toolbar} />
-            <Grid container spacing={3}>
+            <CssBaseline />
+            <Sidebar currentPage={0} title={vendorName} />
+            <main className={classes.content}>
+                <div className={classes.toolbar} />
+                <Grid container spacing={3} >
 
-            { !notFound && products.length
-                ? (
-                products.map(({_id,pictures,name,price,desc}) => ( 
-                    (desc.length > 50 ? desc = desc.substring(0,50) + "..." : null),
-                    <Grid key={_id} item xs={12} sm={4}>
-                        <Paper className={classes.paper}>
-                            <Grid container direction="row" justify="flex-start">
-                                <img src={hostIP.hostIP+pictures[0]} className={classes.categoryImg} />
-                                <Grid item>
-                                    <Grid container direction="row" alignItems="flex-start">
-                                        <Box ml={2}>
-                                        <ThemeProvider theme={theme}>
-                                            <Typography variant="h4"  align="left" style={{marginTop: 3}}>{name}</Typography>
-                                            <Typography variant="body2" align="left" style={{marginLeft: 2, marginTop: 3}}>{desc}</Typography>
-                                        </ThemeProvider>
-                                        </Box>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <Box mt={2} mb={2}>
-                            <Divider />
-                            </Box>
-                            <Grid container direction="row" alignItems="flex-end" justify="space-between">
-                                <Grid item>
-                                    <Typography variant="h4" style={{marginLeft: 5}}>R$ {price}</Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Link to={`/produto/${_id}`} style={{ textDecoration: 'none' }}>
-                                        <Button variant="contained" color="primary">Visualizar</Button>
-                                    </Link>
-                                </Grid>
-                            
-                            </Grid>
-                        </Paper>
-                    </Grid>
-                )))
-                : <Typography variant="h6"  align="center">{msg}</Typography>
-            }
+                    {!notFound && products.length
+                        ? (
+                            products.map(({ _id, pictures, name, price, desc }) => (
+                                (desc.length > 50 ? desc = desc.substring(0, 50) + "..." : null),
+                                <Grid key={_id} item xs={12} sm={4} >
 
-                
-            </Grid>
-        </main>
+                                    <Card className={classes.card} >
+                                        <CardContent className={classes.cardDetails} >
+                                            <Grid container direction="row"  alignItems="center" className={classes.cardItem} spacing={2}>
+                                                <Grid item xs={3} >
+                                                    <CardMedia component="img" className={classes.cardMedia} src={hostIP.hostIP + pictures[0]} />
+                                                </Grid>
+                                                <Grid item xs >
+                                                    <Typography component="h2" variant="h5">
+                                                        {name}
+                                                    </Typography>
+                                                    <Typography variant="subtitle1" color="textSecondary">
+                                                        {desc}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                            
+                                            <Divider />
+                                            <Grid container direction="row" justify="space-between" alignItems="center" className={classes.cardItem} spacing={2}>
+                                                <Grid item >
+                                                    <Typography variant="h5" color="textSecondary">
+                                                        R$ {price}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    <Link to={`/produto/${_id}`} style={{ textDecoration: 'none' }}>
+                                                        <Button variant="contained" color="primary">Visualizar</Button>
+                                                    </Link>
+                                                </Grid>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            )))
+                        : <Typography variant="h6" align="center">{msg}</Typography>
+                    }
+
+
+                </Grid>
+            </main>
         </div>
 
     );

@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import VendorList from './pages/user/vendors/VendorsList';
 import VendorProducts from './pages/user/products/VendorProducts';
 import Products from './pages/user/products/Products';
+import Orders from './pages/user/orders/Orders';
 
 import Register from './pages/register/Register';
 import Login from './pages/login/Login';
@@ -25,6 +26,7 @@ function App() {
               <Route path="/categorias/:id" exact component={() => <VendorList /> }></Route>
               <Route path="/empresa/:vendorId/:vendorName" exact component={() => <VendorProducts /> }></Route>
               <Route path="/produto/:id" exact component={() => <Products /> }></Route>
+              <Route path="/orders" exact component={() => <Orders /> }></Route>
               <Route path="/home" exact component={() => <Home /> }></Route>
 
               <Route path="/register" exact component={() => <Register /> }></Route>

@@ -70,7 +70,9 @@ const useStyles = makeStyles((theme) => ({
 
 function Products(props) {
     let { id } = useParams();
-    console.log(id);
+    //console.log(id);
+    const history = useHistory();
+
     const [dialogOpen, setDialogOpen] = useState(false);
 
     const [photos,setPhotos] = useState({
@@ -87,6 +89,8 @@ function Products(props) {
     const [msg, setMsg] = useState("Buscando dados do produto...");
     const [images,setImages] = useState([]);
 
+    const [tipo, setTipo] = useState(null);
+
     useEffect(() => {
         //console.log("Chamou Vendedores Locais: ");
         api.get('productData', {
@@ -94,27 +98,43 @@ function Products(props) {
                 productid: id,
             }
         }).then(response => {
-            console.log("recebeu:", response.data);
-            console.log("recebeu2:", response.data.product[0]);
-            console.log("recebeu3:", response.data.vendor[0]);
+            //console.log("recebeu:", response.data);
+            //console.log("recebeu2:", response.data.product[0]);
+            //console.log("recebeu3:", response.data.vendor[0]);
             if (!response.data) {
-                console.log("entrou aqui");
+                //console.log("entrou aqui");
                 setNotFound(true);
                 //console.log('entoru');
                 setMsg("Não foram encontrados vendedores dessa categoria em sua região.");
             }
             setData( { product: response.data.product[0], vendor: response.data.vendor[0] } );
             setImages([hostIP.hostIP+response.data.product[0].pictures[0], hostIP.hostIP+response.data.product[0].pictures[1]]);
+            setTipo(response.data.product[0].stock[0].tipo);
         }).catch(err => {
-            console.log(err);
+            //console.log(err);
             setNotFound(true);
             setMsg("Não foi possível realizar a comunicação com o servidor. Tente novamente!");
         })
     }, [id]);
 
-    function generateOrder() {
-        alert("Compra Realizada com Sucesso!");
+    async function generateOrder() {
         setDialogOpen(false);
+
+        const datasend = {
+            userId: localStorage.getItem('buyID'),
+            productId: data.product._id,
+            vendorId: data.product.vendorId,
+            tipo: tipo,
+        }
+
+        try {
+            //console.log("enviou: ",datasend);
+            const response = await api.post('/orderAdd', datasend);
+            alert("Compra Realizada com Sucesso!");
+            history.push('/orders');
+          } catch (err) {
+              alert('Erro ao tentar registrar: ' + err);
+          }
     }
 
     const classes = useStyles();
@@ -202,7 +222,7 @@ function Products(props) {
                                       displayEmpty
                                       className={classes.selectEmpty}
                                       inputProps={{ 'aria-label': 'Without label' }}
-                                    >
+                                      onChange={(e) => setTipo(e.target.value)} >
                                     <MenuItem value="" disabled>Tipo do Produto</MenuItem>
                                     {data.product.stock.map((item) => (
                                       <MenuItem key={item.tipo} value={item.tipo}>{item.tipo} ( {item.quantidade} disponível )</MenuItem>
@@ -251,7 +271,7 @@ function Products(props) {
           <Typography component={'span'} style={{marginTop: 10}} variant="body1" color="textPrimary" align="left"><b>Produto: </b>{data.product != null ? data.product.name : "Produto"}</Typography>
           </Box>
           <Box mb={1}>
-          <Typography component={'span'} style={{marginTop: 10}} variant="body1" color="textPrimary" align="left"><b>Tipo: </b>{data.product != null ? data.product.stock[0].tipo : "Tipo"}</Typography>
+          <Typography component={'span'} style={{marginTop: 10}} variant="body1" color="textPrimary" align="left"><b>Tipo: </b>{data.product != null ? tipo : "Tipo"}</Typography>
           </Box>
           <Box mb={1}>
           <Typography component={'span'} style={{marginTop: 10}} variant="body1" color="textPrimary" align="left"><b>Valor: </b>R$ {data.product != null ? data.product.price : "Preco"}</Typography>

@@ -77,33 +77,38 @@ function idToCategory(id) {
     }
 }
 
-function VendorList(props) {
+function Orders(props) {
     let { id } = useParams();
     let category = idToCategory(id);
     const { window } = props;
     const classes = useStyles();
     //console.log(hostIP.hostIP)
 
+    const [orders, setOrders] = useState([]);
     const [vendors, setVendors] = useState([]);
+    const [products, setProducts] = useState([]);
+
     const [notFound, setNotFound] = useState(false);
-    const [msg, setMsg] = useState("Buscando vendedores de sua região...");
+    const [msg, setMsg] = useState("Buscando seus pedidos...");
 
     useEffect(() => {
 
-        //console.log("Chamou Vendedores Locais: ");
-        api.get('vendorlist', {
+        console.log("Chamou");
+        api.get('orderList', {
             headers: {
-                Localidade: localStorage.getItem('buylocal'),
-                Categoria: id,
+                searchid: localStorage.getItem('buyID'),
+                contid: localStorage.getItem('buyconta'),
             }
         }).then(response => {
-            //console.log("recebeu:", response.data);
-            if (!response.data.length) {
+            console.log("recebeu:", response.data);
+            if (!response.data.orders.length) {
                 setNotFound(true);
                 //console.log('entoru');
-                setMsg("Não foram encontrados vendedores dessa categoria em sua região.");
+                setMsg("Nenhum pedido foi encontrado.");
             }
-            setVendors(response.data);
+            setOrders(response.data.orders);
+            setVendors(response.data.vendors);
+            setProducts(response.data.products);
         }).catch(err => {
             //console.log(err);
             setNotFound(true);
@@ -132,37 +137,41 @@ function VendorList(props) {
         }
     };
 
+    function convertDate(data) {
+        let d = new Date(data);
+        function pad(s) { return (s < 10) ? '0' + s : s; }
+        let result = [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/');
+        return result + " - " + pad(d.getHours()) + ":" + pad(d.getMinutes());
+    }
+
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <Sidebar currentPage={0} title={`Lojas de ${category}`} />
+            <Sidebar currentPage={1} title={"Meus Pedidos"} />
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <Grid container spacing={3}>
 
-                    {!notFound && vendors.length
+                    {!notFound && orders.length && vendors.length && products.length
                         ? (
-                            vendors.map(({ _id, name, endereco, img }) => (
-                                <Grid key={_id} item xs={12} md={6}>
-                                    <Link to={`/empresa/${_id}/${name}`} style={{ textDecoration: 'none' }}>
-
-                                        <CardActionArea>
-                                            <Card className={classes.card}>
-                                                <CardMedia component="img" className={classes.cardMedia} src={hostIP.hostIP + img} />
-                                                <div className={classes.cardDetails}>
-                                                    <CardContent>
-                                                        <Typography component="h2" variant="h5">
-                                                            {name}
-                                                        </Typography>
-                                                        <Typography variant="subtitle1" color="textSecondary">
-                                                            {endereco[1].logradouro},{endereco[5].numero} - {endereco[2].bairro}
-                                                        </Typography>
-                                                    </CardContent>
-                                                </div>
-                                            </Card>
-                                        </CardActionArea>
-                                    </Link>
-                                </Grid>
+                            vendors.map((item,index) => (
+                                <Grid key={index} item xs={12} md={6}>
+                                    <CardActionArea>
+                                        <Card className={classes.card}>
+                                            <CardMedia component="img" className={classes.cardMedia} src={hostIP.hostIP + products[index][0].pictures[0]} />
+                                            <div className={classes.cardDetails}>
+                                                <CardContent>
+                                                    <Typography variant="body2" color="textSecondary">{convertDate(orders[index].createdAt)}</Typography>
+                                                    <Typography variant="h5" style={{marginTop: 5}}>{products[index][0].name}</Typography>
+                                                    <Typography variant="body1"  style={{marginTop: 2}} color="textSecondary"><b>Tipo/Tamanho: </b> {orders[index].tipo}</Typography>
+                                                    <Typography variant="body1" style={{marginTop: 2}} color="textSecondary"><b>Total: </b>R$ {products[index][0].price}</Typography>
+                                                    <Typography variant="body1" style={{marginTop: 2}} color="textSecondary"><b>Vendedor: </b>{vendors[index][0].name}</Typography>
+                                                    <Typography variant="body1" style={{marginTop: 2}} color="textSecondary"><b>Endereço: </b>{vendors[index][0].endereco[1].logradouro},{vendors[index][0].endereco[5].numero} - {vendors[index][0].endereco[2].bairro} </Typography>
+                                                </CardContent>
+                                            </div>
+                                        </Card>
+                                    </CardActionArea>
+                            </Grid>
                             ))
                         )
                         : <Typography variant="h6" align="center">{msg}</Typography>
@@ -175,4 +184,4 @@ function VendorList(props) {
     );
 }
 
-export default VendorList;
+export default Orders;

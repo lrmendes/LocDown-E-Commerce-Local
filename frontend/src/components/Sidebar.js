@@ -18,6 +18,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import ViewHeadlineOutlinedIcon from '@material-ui/icons/ViewHeadlineOutlined';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
@@ -26,6 +27,8 @@ import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import { Link } from "react-router-dom";
 import { Box } from "@material-ui/core";
 import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom'
+
 
 const drawerWidth = 240;
 
@@ -100,7 +103,7 @@ function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} style={{  display: 'flex', justifyContent: 'center', alignItems: 'center'}}><Typography variant={'h6'} style={{color: '#7f00ff'}}>BUY BUY</Typography></div>
+      <div className={classes.toolbar} style={{  display: 'flex', justifyContent: 'center', alignItems: 'center'}}><Typography variant={'h6'} style={{color: '#7f00ff'}}>LocDown</Typography></div>
       <Divider />
       <Box mt={1} style={{textAlign: 'center'}}>
       <Typography>Bem vindo,</Typography>
@@ -144,6 +147,13 @@ function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
           >
             <MenuIcon />
           </IconButton>
+          { useLocation().pathname != '/home'
+          ? <IconButton
+            color="inherit"
+            edge="start"
+            onClick={() => history.goBack()}
+          ><ArrowBackIosIcon /></IconButton>
+          : null}
           <Typography variant="h6" noWrap>
             {title}
           </Typography>

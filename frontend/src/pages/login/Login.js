@@ -62,6 +62,7 @@ function Login(props) {
             localStorage.setItem('buyconta', 1);
             localStorage.setItem('buylocal', response.data.user.endereco[3].localidade);
             localStorage.setItem('buynome', response.data.user.name);
+            localStorage.setItem('buyID', response.data.user._id);
 
             history.push({
                 pathname: "/home",
