@@ -27,7 +27,7 @@ router.get('/orderList', async (req, res) => {
             const orders = await Order.find({ vendorId: searchid });
             
             const users = await Promise.all(orders.map(element => {
-                return Vendor.find({  _id: element.userId })
+                return User.find({  _id: element.userId })
             }));
 
             const products = await Promise.all(orders.map(element => {

@@ -169,7 +169,7 @@ function Orders(props) {
                                                     <Typography variant="body1" style={{marginTop: 2}} color="textSecondary"><b>Total: </b>R$ {products[index][0].price}</Typography>
                                                     <Typography variant="body1" style={{marginTop: 2}} color="textSecondary"><b>Vendedor: </b>{vendors[index][0].name}</Typography>
                                                     <Typography variant="body1" style={{marginTop: 2}} color="textSecondary"><b>Endereço: </b>{vendors[index][0].endereco[1].logradouro},{vendors[index][0].endereco[5].numero} - {vendors[index][0].endereco[2].bairro} </Typography>
-                                                    <Button color="primary" style={{marginTop: 2}} variant="contained" href={`https://api.whatsapp.com/send?phone=55${vendors[index][0].whatsapp}&text=Olá, realizei a compra do produto "${products[index][0].name}" em "${convertDate(orders[index].createdAt)}".%0aTenho a seguinte dúvida: `} endIcon={<WhatsAppIcon/>}>Contatar Vendedor</Button>
+                                                    <Button color="primary" style={{marginTop: 2}} variant="contained" href={`https://api.whatsapp.com/send?phone=55${vendors[index][0].whatsapp}&text=Olá, realizei a compra do produto "${products[index][0].name}" em "${convertDate(orders[index].createdAt)}".%0aTenho a seguinte dúvida:%0a`} endIcon={<WhatsAppIcon/>}>Contatar Vendedor</Button>
                                                 </CardContent>
                                                 </div>
                                         </Card>
