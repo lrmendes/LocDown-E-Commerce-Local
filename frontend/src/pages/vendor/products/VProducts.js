@@ -1,12 +1,11 @@
-import React,{useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {Grid, Paper, Box, Divider} from '@material-ui/core';
+import {Grid, Paper, Box, Divider, Card, CardActionArea, CardContent, CardMedia} from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import SidebarVendor from '../../../components/SidebarVendor';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Link } from "react-router-dom";
-import api from '../../../services/api';
 
 import { useHistory } from 'react-router-dom';
 import { Button, Input, InputLabel, TextField, Select, IconButton } from '@material-ui/core';
@@ -15,10 +14,13 @@ import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } f
 
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
 
+import api from '../../../services/api';
 
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import CheckIcon from '@material-ui/icons/Check';
 import { green } from '@material-ui/core/colors';
+
+const hostIP = require('../../../services/hostIP.json');
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -63,6 +65,26 @@ const useStyles = makeStyles((theme) => ({
     removeIcon: {
       color: '#00065c'
     },
+    card: {
+      display: 'flex',
+      width: '100%',
+      paddingLeft: '10px',
+      border: '1px solid #c6c6c6 rgba(0,0,0,0.1)',
+      boxShadow: '1px 2px 3px 2px rgba(0,0,0,0.1)',
+    },
+    cardDetails: {
+        flex: 1,
+    },
+    cardItem: {
+        marginTop: '4px',
+    },
+    cardMedia: {
+        
+        alignSelf: 'center',
+        width: '64px',
+        height: '64px',
+        marginBottom: '4px',
+    },
 }));
 
 function VProducts( props ) {
@@ -88,6 +110,29 @@ function VProducts( props ) {
   const history = useHistory();
 
   const [dialogOpen, setDialogOpen] = useState(false);
+
+  const [products, setProducts] = useState([]);
+  const [notFound, setNotFound] = useState(false);
+  const [msg, setMsg] = useState("Buscando produtos...");
+
+  useEffect(() => {
+
+    //console.log("Chamou Vendedores Locais: ");
+    api.get('vendorProducts', {
+        headers: {
+            vendorId: localStorage.getItem('buyID')
+        }
+    }).then(response => {
+        if (!response.data.length) {
+            setNotFound(true);
+            setMsg("Você não possui produtos cadastrados.");
+        }
+        setProducts(response.data);
+    }).catch(err => {
+        setNotFound(true);
+        setMsg("Não foi possível realizar a comunicação com o servidor. Tente novamente!");
+    })
+  }, []);
 
   const classes = useStyles();
   const theme = createMuiTheme();
@@ -341,6 +386,50 @@ function VProducts( props ) {
                     <ThemeProvider theme={theme}>
                         <Typography variant="h4" color="textPrimary">Meus Produtos</Typography>
                     </ThemeProvider>
+                    <Divider style={{marginTop:10, marginBottom: 10}} />
+                    </Grid>
+                    <Grid container spacing={3}>
+                    {!notFound && products.length
+                        ? (
+                            products.map(({ _id, pictures, name, price, desc }) => (
+                                (desc.length > 50 ? desc = desc.substring(0, 50) + "..." : null),
+                                <Grid key={_id} item xs={12} sm={6} >
+
+                                    <Card className={classes.card} >
+                                        <CardContent className={classes.cardDetails} >
+                                            <Grid container direction="row"  alignItems="center" className={classes.cardItem} spacing={2}>
+                                                <Grid item xs={3} >
+                                                    <CardMedia component="img" className={classes.cardMedia} src={hostIP.hostIP + pictures[0]} />
+                                                </Grid>
+                                                <Grid item xs >
+                                                    <Typography component="h2" variant="h5">
+                                                        {name}
+                                                    </Typography>
+                                                    <Typography variant="subtitle1" color="textSecondary">
+                                                        {desc}
+                                                    </Typography>
+                                                </Grid>
+                                            </Grid>
+                                            
+                                            <Divider />
+                                            <Grid container direction="row" justify="space-between" alignItems="center" className={classes.cardItem} spacing={2}>
+                                                <Grid item >
+                                                    <Typography variant="h5" color="textSecondary">
+                                                        R$ {price}
+                                                    </Typography>
+                                                </Grid>
+                                                <Grid item>
+                                                    <Link to={`/produto/${_id}`} style={{ textDecoration: 'none' }}>
+                                                        <Button variant="contained" color="primary">Visualizar</Button>
+                                                    </Link>
+                                                </Grid>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            )))
+                        : <Typography variant="h6" align="center">{msg}</Typography>
+                    }
                     </Grid>
                 </Grid>
             </Paper>

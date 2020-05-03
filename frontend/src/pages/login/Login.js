@@ -70,7 +70,7 @@ function Login(props) {
             });
         } catch (err) {
             //console.log(err);
-            alert('Error ao tentar logar User.');
+            alert('Error ao tentar logar usuário! Caso seja uma conta de vendedor, alterne a aba de login!');
         }
     }
 
@@ -98,7 +98,7 @@ function Login(props) {
             });
         } catch (err) {
             //console.log(err);
-            alert('Error ao tentar logar Vendor.');
+            alert('Error ao tentar logar vendedor! Caso seja uma conta de usuário, alterne a aba de login!');
         }
     }
 
