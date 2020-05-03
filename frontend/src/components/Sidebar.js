@@ -23,6 +23,8 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
+import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
+
 
 import { Link } from "react-router-dom";
 import { Box } from "@material-ui/core";
@@ -97,7 +99,7 @@ function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
   const menuUser = [
     { name: 0, label: 'Inicio', route: '/home', Icon: HomeOutlinedIcon },
     { name: 1, label: 'Pedidos', route: '/orders', Icon: ViewHeadlineOutlinedIcon},
-    { name: 2, label: 'Configurações', route: '/configs', Icon: SettingsOutlinedIcon},
+    { name: 2, label: 'Perfil', route: '/profile', Icon: PersonOutlineOutlinedIcon},
     { name: 3, label: 'Sair', route: '/logout', Icon: ExitToAppOutlinedIcon},
   ]
 

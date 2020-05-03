@@ -22,6 +22,8 @@ import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
+import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
+
 
 import AddShoppingCartOutlinedIcon from '@material-ui/icons/AddShoppingCartOutlined';
 import { Link } from "react-router-dom";
@@ -96,7 +98,7 @@ function SidebarVendor( {currentPage = 0, title = 'DashBoard'}, ...props) {
     { name: 0, label: 'Inicio', route: '/vendor/home', Icon: HomeOutlinedIcon },
     { name: 1, label: 'Produtos', route: '/vendor/products', Icon: ArchiveOutlinedIcon},
     { name: 2, label: 'Vendas', route: '/vendor/sales', Icon: AttachMoneyIcon},
-    { name: 3, label: 'Configurações', route: '/vendor/configs', Icon: SettingsOutlinedIcon},
+    { name: 3, label: 'Perfil', route: '/vendor/profile', Icon: PersonOutlineOutlinedIcon},
     { name: 4, label: 'Sair', route: '/logout', Icon: ExitToAppOutlinedIcon},
   ]
 

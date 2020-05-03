@@ -21,6 +21,8 @@ require('./controller/authVendorController')(app);
 require('./controller/vendorList')(app);
 require('./controller/vendorProducts')(app);
 require('./controller/vendorAddProducts')(app);
+require('./controller/vendorData')(app);
+require('./controller/userData')(app);
 
 require('./controller/productData')(app);
 
