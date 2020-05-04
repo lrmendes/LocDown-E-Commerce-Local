@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Paper, Box, Button, Input, InputLabel, TextField, Typography, Select } from '@material-ui/core';
-import { CssBaseline, Container, Avatar, FormControlLabel, Checkbox, MenuItem } from '@material-ui/core';
+import { Grid, Button, InputLabel, TextField, Typography, Select } from '@material-ui/core';
+import { CssBaseline, Container, Avatar, MenuItem } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import CheckIcon from '@material-ui/icons/Check';
@@ -13,7 +13,6 @@ import { Link } from "react-router-dom";
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
-import FormControl from '@material-ui/core/FormControl';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 
 import api from '../../services/api';
@@ -87,7 +86,7 @@ function Register(props) {
     const [address, setAddress] = useState(null);
     const [endNum, setEndNum] = useState("");
 
-    const [isClient, setIsClient] = useState(true);
+    //const [isClient, setIsClient] = useState(true);
     const [file, setFile] = useState({
         file: null
     });
@@ -142,7 +141,8 @@ function Register(props) {
         };
 
         try {
-            const response = api.post('/auth/register', data);
+            // const response = api.post('/auth/register', data);
+            await api.post('/auth/register', data);
             alert('Cadastro Realizado!');
             history.push({
                 pathname: "/login",
@@ -190,7 +190,8 @@ function Register(props) {
         };
 
         try {
-            const response = await api.post('/auth/registervendor', form, config);
+            await api.post('/auth/registervendor', form, config);
+            //const response = await api.post('/auth/registervendor', form, config);
             //console.log(response);
             alert('Cadastro Realizado!');
             history.push({
@@ -296,7 +297,6 @@ function Register(props) {
                                         label="Número"
                                         type="number"
                                         onChange={(e) => setEndNum(e.target.value)}
-                                        size="small"
                                         variant="outlined"
                                         style={{ width: 80, marginBottom: 2 }}
                                     />
@@ -325,7 +325,7 @@ function Register(props) {
                                 </Grid>
                             ) : null}
 
-                        {alignment == 'empresa'
+                        {alignment === 'empresa'
                             ? (
                                 <Grid item xs={12}>
                                     <InputLabel htmlFor="demo-simple-select-outlined-label">Setor da Empresa</InputLabel>
@@ -350,7 +350,7 @@ function Register(props) {
                                 </Grid>
                             ) : null}
 
-                        {alignment == 'empresa'
+                        {alignment === 'empresa'
                             ? (
                                 <Grid item xs={12}>
 

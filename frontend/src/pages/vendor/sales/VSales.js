@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Paper, Box, Button } from '@material-ui/core';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Grid, Button } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 import SidebarVendor from '../../../components/SidebarVendor';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
@@ -12,7 +11,6 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 
-import { Link } from "react-router-dom";
 import api from '../../../services/api';
 
 import WhatsAppIcon from '@material-ui/icons/WhatsApp';
@@ -54,33 +52,12 @@ const useStyles = makeStyles((theme) => ({
     cardMedia: {
         alignContent: 'center',
         alignSelf: 'center',
-        width: '48px',
-        height: '48px',
+        width: '64px',
+        height: '64px',
     },
 }));
 
-function idToCategory(id) {
-    switch (id) {
-        case '0':
-            return "Roupa";
-            break;
-        case '1':
-            return "Calçado";
-            break;
-        case '2':
-            return "Eletrônicos";
-            break;
-        case '3':
-            return "Brinquedos";
-            break;
-        default:
-            return "";
-            break;
-    }
-}
-
 function VSales(props) {
-    const { window } = props;
     const classes = useStyles();
     //console.log(hostIP.hostIP)
 
@@ -93,18 +70,15 @@ function VSales(props) {
 
     useEffect(() => {
 
-        console.log("Chamou");
         api.get('orderList', {
             headers: {
                 searchid: localStorage.getItem('buyID'),
                 contid: localStorage.getItem('buyconta'),
             }
         }).then(response => {
-            console.log("recebeu:", response.data);
-            console.log("recebeu2:", response.data.orders);
+            //console.log("recebeu:", response.data.orders);
             if (!response.data.orders.length) {
                 setNotFound(true);
-                console.log('entoru');
                 setMsg("Nenhuma venda foi encontrada.");
             }
             setOrders(response.data.orders);
@@ -148,7 +122,7 @@ function VSales(props) {
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <SidebarVendor currentPage={2} title={"Minhas Vendas"} />
+            <SidebarVendor currentPage={1} title={"Minhas Vendas"} />
             <main className={classes.content}>
                 <div className={classes.toolbar} />
                 <Grid container spacing={3}>
@@ -156,7 +130,7 @@ function VSales(props) {
                     {!notFound && orders.length && users.length && products.length
                         ? (
                             users.map((item,index) => (
-                                <Grid key={index} item xs={12} md={6}>
+                                <Grid key={index} item xs={12} md={4}>
                                     <CardActionArea>
                                         <Card className={classes.card}>
                                             <CardMedia component="img" className={classes.cardMedia} src={hostIP.hostIP + products[index][0].pictures[0]} />

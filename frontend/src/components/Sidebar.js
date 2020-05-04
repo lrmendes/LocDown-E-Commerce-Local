@@ -16,15 +16,13 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
 import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
 import ViewHeadlineOutlinedIcon from '@material-ui/icons/ViewHeadlineOutlined';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
-import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
-import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 
+import logoImg from '../assets/icon.png';
 
 import { Link } from "react-router-dom";
 import { Box } from "@material-ui/core";
@@ -76,6 +74,11 @@ const useStyles = makeStyles((theme) => ({
   },
   textData: {
     color: '#7f00ff',
+  },
+  logoImg: {
+    width: '24px',
+    heigh: 'auto',
+    marginRight: '4px'
   }
 }));
 
@@ -97,7 +100,7 @@ function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
   };
 
   const menuUser = [
-    { name: 0, label: 'Inicio', route: '/home', Icon: HomeOutlinedIcon },
+    { name: 0, label: 'Início', route: '/home', Icon: HomeOutlinedIcon },
     { name: 1, label: 'Pedidos', route: '/orders', Icon: ViewHeadlineOutlinedIcon},
     { name: 2, label: 'Perfil', route: '/profile', Icon: PersonOutlineOutlinedIcon},
     { name: 3, label: 'Sair', route: '/logout', Icon: ExitToAppOutlinedIcon},
@@ -105,13 +108,13 @@ function Sidebar( {currentPage = 0, title = 'DashBoard'}, ...props) {
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} style={{  display: 'flex', justifyContent: 'center', alignItems: 'center'}}><Typography variant={'h6'} style={{color: '#7f00ff'}}>LocDown</Typography></div>
+      <div className={classes.toolbar} style={{  display: 'flex', justifyContent: 'center', alignItems: 'center'}}><img src={logoImg} className={classes.logoImg} /><Typography variant={'h6'} style={{color: '#7f00ff'}}>LocDown</Typography></div>
       <Divider />
       <Box mt={1} style={{textAlign: 'center'}}>
       <Typography>Bem vindo,</Typography>
       <Typography className={classes.textData}>{localStorage.getItem('buynome')}</Typography>
       <Box mt={1}>
-      <Typography>Sua Região:</Typography>
+      <Typography>Sua Cidade:</Typography>
       <Typography className={classes.textData}>{localStorage.getItem('buylocal')}</Typography>
       </Box>
       </Box>

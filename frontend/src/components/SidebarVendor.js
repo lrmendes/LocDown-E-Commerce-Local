@@ -15,20 +15,17 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 
-import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
-import SearchOutlinedIcon from '@material-ui/icons/SearchOutlined';
-import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import ExitToAppOutlinedIcon from '@material-ui/icons/ExitToAppOutlined';
 
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import ArchiveOutlinedIcon from '@material-ui/icons/ArchiveOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 
-
-import AddShoppingCartOutlinedIcon from '@material-ui/icons/AddShoppingCartOutlined';
 import { Link } from "react-router-dom";
 import { Box } from "@material-ui/core";
 import { useHistory } from 'react-router-dom';
+
+import logoImg from '../assets/icon.png';
 
 const drawerWidth = 240;
 
@@ -74,6 +71,11 @@ const useStyles = makeStyles((theme) => ({
   },
   textData: {
     color: '#008cff',
+  },
+  logoImg: {
+    width: '24px',
+    heigh: 'auto',
+    marginRight: '4px'
   }
 }));
 
@@ -95,22 +97,21 @@ function SidebarVendor( {currentPage = 0, title = 'DashBoard'}, ...props) {
   };
 
   const menuUser = [
-    { name: 0, label: 'Inicio', route: '/vendor/home', Icon: HomeOutlinedIcon },
-    { name: 1, label: 'Produtos', route: '/vendor/products', Icon: ArchiveOutlinedIcon},
-    { name: 2, label: 'Vendas', route: '/vendor/sales', Icon: AttachMoneyIcon},
-    { name: 3, label: 'Perfil', route: '/vendor/profile', Icon: PersonOutlineOutlinedIcon},
-    { name: 4, label: 'Sair', route: '/logout', Icon: ExitToAppOutlinedIcon},
+    { name: 0, label: 'Produtos', route: '/vendor/products', Icon: ArchiveOutlinedIcon},
+    { name: 1, label: 'Vendas', route: '/vendor/sales', Icon: AttachMoneyIcon},
+    { name: 2, label: 'Perfil', route: '/vendor/profile', Icon: PersonOutlineOutlinedIcon},
+    { name: 3, label: 'Sair', route: '/logout', Icon: ExitToAppOutlinedIcon},
   ]
 
   const drawer = (
     <div>
-      <div className={classes.toolbar} style={{  display: 'flex', justifyContent: 'center', alignItems: 'center'}}><Typography variant={'h6'} style={{color: '#008cff'}}>BUY BUY</Typography></div>
+      <div className={classes.toolbar} style={{  display: 'flex', justifyContent: 'center', alignItems: 'center'}}><img src={logoImg} className={classes.logoImg} /><Typography variant={'h6'} style={{color: '#008cff'}}>LocDown</Typography></div>
       <Divider />
       <Box mt={1} style={{textAlign: 'center'}}>
       <Typography>Bem vindo,</Typography>
       <Typography className={classes.textData}>{localStorage.getItem('buynome')}</Typography>
       <Box mt={1}>
-      <Typography>Sua Região:</Typography>
+      <Typography>Sua Cidade:</Typography>
       <Typography className={classes.textData}>{localStorage.getItem('buylocal')}</Typography>
       </Box>
       </Box>

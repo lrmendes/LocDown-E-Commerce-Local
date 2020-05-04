@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Paper, Box, Button } from '@material-ui/core';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Grid } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 import Sidebar from '../../../components/Sidebar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
@@ -58,26 +58,20 @@ function idToCategory(id) {
     switch (id) {
         case '0':
             return "Roupa";
-            break;
         case '1':
             return "Calçado";
-            break;
         case '2':
             return "Eletrônicos";
-            break;
         case '3':
             return "Brinquedos";
-            break;
         default:
             return "";
-            break;
     }
 }
 
 function VendorList(props) {
     let { id } = useParams();
     let category = idToCategory(id);
-    const { window } = props;
     const classes = useStyles();
     //console.log(hostIP.hostIP)
 
@@ -97,7 +91,6 @@ function VendorList(props) {
             //console.log("recebeu:", response.data);
             if (!response.data.length) {
                 setNotFound(true);
-                //console.log('entoru');
                 setMsg("Não foram encontrados vendedores dessa categoria em sua região.");
             }
             setVendors(response.data);

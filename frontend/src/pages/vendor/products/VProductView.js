@@ -4,14 +4,13 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Paper, Box, Button, Divider, MenuItem, Select } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
-import Sidebar from '../../../components/Sidebar';
+import SidebarVendor from '../../../components/SidebarVendor';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Lightbox from 'react-image-lightbox';
 import 'react-image-lightbox/style.css'; 
 import FormControl from '@material-ui/core/FormControl';
 import api from '../../../services/api';
 
-import {Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 
 
@@ -55,23 +54,12 @@ const useStyles = makeStyles((theme) => ({
             width: '50%',
         }
     },
-    dialogCustom: {
-        width: '90%',
-        '@media (min-width:600px)': {
-            width: '400px',
-        },
-        [theme.breakpoints.up('md')]: {
-            width: '400px',
-        }
-    }
 }));
 
 function Products(props) {
     let { id } = useParams();
     //console.log(id);
     const history = useHistory();
-
-    const [dialogOpen, setDialogOpen] = useState(false);
 
     const [photos,setPhotos] = useState({
         photoIndex: 0,
@@ -115,26 +103,6 @@ function Products(props) {
         })
     }, [id]);
 
-    async function generateOrder() {
-        setDialogOpen(false);
-
-        const datasend = {
-            userId: localStorage.getItem('buyID'),
-            productId: data.product._id,
-            vendorId: data.product.vendorId,
-            tipo: tipo,
-        }
-
-        try {
-            //console.log("enviou: ",datasend);
-            await api.post('/orderAdd', datasend);
-            alert("Compra Realizada com Sucesso!");
-            history.push('/orders');
-          } catch (err) {
-              alert('Erro ao tentar registrar: ' + err);
-          }
-    }
-
     const classes = useStyles();
 
     const theme = createMuiTheme();
@@ -161,7 +129,7 @@ function Products(props) {
     return (
         <div className={classes.root}>
         <CssBaseline />
-        <Sidebar currentPage={0} title={data.product != null ? data.product.name : "Produto"} />
+        <SidebarVendor currentPage={0} title={data.product != null ? data.product.name : "Produto"} />
         <main className={classes.content}>
         <div className={classes.toolbar} />
         { !notFound && data.product != null
@@ -207,11 +175,11 @@ function Products(props) {
                         : null }
 
                         <Divider style={{marginBottom: 10}} />
-                        <Grid container direction="row" alignItems="flex-end" justify="space-between" spacing={2}>
-                            <Grid item xs={12} sm={4}>
+                        <Grid container direction="row" alignItems="flex-end" justify="space-evenly" spacing={2}>
+                            <Grid item xs={12} sm={6}>
                                 <Typography variant="h5" color="textPrimary">R$ {data.product.price}</Typography>
                             </Grid>
-                            <Grid item xs={6} sm={4}>
+                            <Grid item xs={6} sm={6}>
                             { data.product.stock.length > 1 
                                 ? 
                                     <FormControl className={classes.formControl}>
@@ -231,9 +199,6 @@ function Products(props) {
                                 
                                 : <Typography variant="body1">Produto com Tamanho Único</Typography> }
 
-                            </Grid>
-                            <Grid item xs={6} sm={4}>
-                                <Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>Comprar</Button>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -256,35 +221,6 @@ function Products(props) {
         onMoveNextRequest={() => setPhotos({...photos, photoIndex: ((photos.photoIndex + 1) % images.length) }) }
         />
     )}   
-
-        <Dialog
-        open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">Confirmar Compra</DialogTitle>
-        <Box mr={4}>
-        <DialogContent>
-          <Box mb={1}>
-          <Typography component={'span'} style={{marginTop: 10}} variant="body1" color="textPrimary" align="left"><b>Produto: </b>{data.product != null ? data.product.name : "Produto"}</Typography>
-          </Box>
-          <Box mb={1}>
-          <Typography component={'span'} style={{marginTop: 10}} variant="body1" color="textPrimary" align="left"><b>Tipo: </b>{data.product != null ? tipo : "Tipo"}</Typography>
-          </Box>
-          <Box mb={1}>
-          <Typography component={'span'} style={{marginTop: 10}} variant="body1" color="textPrimary" align="left"><b>Valor: </b>R$ {data.product != null ? data.product.price : "Preco"}</Typography>
-          </Box>
-        </DialogContent>
-        </Box>
-        <DialogActions>
-          <Button onClick={() => setDialogOpen(false)} color="primary">
-            Cancelar
-          </Button>
-          <Button onClick={() => { generateOrder() }} color="primary" variant="contained" >
-            Comprar
-          </Button>
-          </DialogActions>
-        </Dialog>
 
     </main>
     </div>

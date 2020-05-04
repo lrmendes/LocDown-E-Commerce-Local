@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {Grid, Paper, Box, Divider, Card, CardActionArea, CardContent, CardMedia} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import {Grid, Paper, Box, Divider, Card, CardContent, CardMedia} from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import SidebarVendor from '../../../components/SidebarVendor';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { Link } from "react-router-dom";
 
 import { useHistory } from 'react-router-dom';
-import { Button, Input, InputLabel, TextField, Select, IconButton } from '@material-ui/core';
-import { Container, Avatar, FormControlLabel, Checkbox, MenuItem } from '@material-ui/core';
+import { Button, InputLabel, TextField, Select, IconButton } from '@material-ui/core';
+import { MenuItem } from '@material-ui/core';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 
 import DeleteForeverOutlinedIcon from '@material-ui/icons/DeleteForeverOutlined';
@@ -94,7 +94,7 @@ function VProducts( props ) {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [price, setPrice] = useState(0);
-  const [pictures, setPictures] = useState([]);
+  //const [pictures, setPictures] = useState([]);
   const [file, setFile] = useState({ file: null });
   const [file2, setFile2] = useState({ file: null });
   
@@ -139,13 +139,10 @@ function VProducts( props ) {
 
   function removeStock(item) {
     let existsID = stock.findIndex(element => element.tipo === item.tipo);
-    console.log(stock);
-    console.log("entoru");
+    //console.log(stock);
     if (existsID !== -1) {
-      console.log("achou");
       setStock(stock.filter(element => { return element.tipo !== item.tipo } ));
-      console.log("removeu");
-      console.log(stock);
+      //console.log(stock);
     }
   }
 
@@ -162,7 +159,7 @@ function VProducts( props ) {
     }
 
     if (file.file == null || !file.file) {
-      return alert("Você deve enviar uma imagem primária!");
+      return alert("Você deve enviar uma imagem principal!");
     }
     if (file2.file == null || !file2.file) {
       return alert("Você deve enviar uma imagem secundária!");
@@ -221,7 +218,9 @@ function VProducts( props ) {
       //console.log("recebeu");
       alert("O Produto foi Cadastrado!");
       
-      history.push('/vendor/home');
+      //history.push('/vendor/home');
+      const history2 = require("history").createBrowserHistory();
+      history2.go(0);
 
     } catch (err) {
         alert('Erro ao tentar registrar: ' + err);
@@ -251,7 +250,7 @@ function VProducts( props ) {
   return (
     <div className={classes.root}>
     <CssBaseline />
-    <SidebarVendor currentPage={1} title={"Meus Produtos"} />
+    <SidebarVendor currentPage={0} title={"Produtos"} />
       <main className={classes.content}>
       <div className={classes.toolbar} />
       <Grid container spacing={3}>
@@ -393,7 +392,7 @@ function VProducts( props ) {
                         ? (
                             products.map(({ _id, pictures, name, price, desc }) => (
                                 (desc.length > 50 ? desc = desc.substring(0, 50) + "..." : null),
-                                <Grid key={_id} item xs={12} sm={6} >
+                                <Grid key={_id} item xs={12} sm={4} >
 
                                     <Card className={classes.card} >
                                         <CardContent className={classes.cardDetails} >
@@ -405,7 +404,7 @@ function VProducts( props ) {
                                                     <Typography component="h2" variant="h5">
                                                         {name}
                                                     </Typography>
-                                                    <Typography variant="subtitle1" color="textSecondary">
+                                                    <Typography variant="body2" color="textSecondary">
                                                         {desc}
                                                     </Typography>
                                                 </Grid>
@@ -419,7 +418,7 @@ function VProducts( props ) {
                                                     </Typography>
                                                 </Grid>
                                                 <Grid item>
-                                                    <Link to={`/produto/${_id}`} style={{ textDecoration: 'none' }}>
+                                                    <Link to={`/vendor/produto/${_id}`} style={{ textDecoration: 'none' }}>
                                                         <Button variant="contained" color="primary">Visualizar</Button>
                                                     </Link>
                                                 </Grid>

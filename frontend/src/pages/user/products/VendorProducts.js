@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Paper, Box, Button, Divider, Card } from '@material-ui/core';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Grid, Button, Divider, Card } from '@material-ui/core';
+import { createMuiTheme } from '@material-ui/core/styles';
 import Sidebar from '../../../components/Sidebar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 
@@ -66,7 +65,6 @@ const useStyles = makeStyles((theme) => ({
 function VendorProducts(props) {
     let { vendorId, vendorName } = useParams();
 
-    const { window } = props;
     const classes = useStyles();
 
     const [products, setProducts] = useState([]);

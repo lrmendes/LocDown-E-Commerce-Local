@@ -1,6 +1,6 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import {Grid, Paper, Box} from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Sidebar from '../../../components/Sidebar';
@@ -49,7 +49,6 @@ const categories = [
 
 function Home( props ) {
   
-  const { window } = props;
   const classes = useStyles();
 
   const theme = createMuiTheme();
@@ -76,7 +75,7 @@ function Home( props ) {
   return (
     <div className={classes.root}>
     <CssBaseline />
-    <Sidebar currentPage={0} title={"Inicio"} />
+    <Sidebar currentPage={0} title={"Início"} />
       <main className={classes.content}>
       <div className={classes.toolbar} />
       <Grid container justify="center" alignItems="center">

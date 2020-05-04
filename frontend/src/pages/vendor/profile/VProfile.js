@@ -1,41 +1,33 @@
 import React, {useState, useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import SidebarVendor from '../../../components/SidebarVendor';
-import {Grid, Paper, Box, Button, Input, Divider, InputAdornment, TextField} from '@material-ui/core';
+import {Grid, Paper, Box, InputAdornment, TextField} from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import axios from 'axios';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import api from '../../../services/api';
-import FormControl from '@material-ui/core/FormControl';
 
 const hostIP = require('../../../services/hostIP.json');
 
 function idToCategory(id) {
-    console.log("entrou: ",id);
     switch (id) {
         case '0':
         case 0:
             return "Roupas";
-            break;
         case 1:
         case '1':
             return "Calçados";
-            break;
         case 2:
         case '2':
             return "Eletrônicos";
-            break;
         case 3:
         case '3':
             return "Brinquedos";
-            break;
         default:
             return "";
-            break;
     }
 }
 
@@ -81,20 +73,19 @@ function VProfile( props ) {
   const [msg, setMsg] = useState("Buscando dados do perfil...");
 
   useEffect(() => {
-    console.log("buscou");
     api.get('vendorData', {
         headers: {
             buyid: localStorage.getItem('buyID'),
         }
     }).then(response => {
-        console.log(response.data.vendor[0]);
+        //console.log(response.data.vendor[0]);
         if (!response.data.vendor[0]) {
             setNotFound(true);
             setMsg("O perfil não foi encontrado.");
         }
         setProfileData({vendor: response.data.vendor[0]});
     }).catch(err => {
-        console.log(err);
+        //console.log(err);
         setNotFound(true);
         setMsg("Não foi possível realizar a comunicação com o servidor. Tente novamente!");
     })
@@ -123,7 +114,7 @@ function VProfile( props ) {
   return (
     <div className={classes.root}>
     <CssBaseline />
-    <SidebarVendor currentPage={3} title={"Perfil"} />
+    <SidebarVendor currentPage={2} title={"Perfil"} />
       <main className={classes.content}>
       <div className={classes.toolbar} />
       {!notFound && profiledata.vendor != null
@@ -136,7 +127,7 @@ function VProfile( props ) {
                     </ThemeProvider>
                     <Grid container direction="row" spacing={2}>
                         <Grid item>
-                            <img className={classes.categoryImg} src={hostIP.hostIP + profiledata.vendor.img} />
+                            <img alt="Logotipo do Vendedor" className={classes.categoryImg} src={hostIP.hostIP + profiledata.vendor.img} />
                         </Grid>
                         <Grid item xs>
                             <Box mt={2}>

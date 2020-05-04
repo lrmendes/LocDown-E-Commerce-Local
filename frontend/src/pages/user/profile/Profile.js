@@ -1,16 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Sidebar from '../../../components/Sidebar';
-import {Grid, Paper, Box, Button, Input, Divider, InputAdornment, TextField} from '@material-ui/core';
+import {Grid, Paper, Box, InputAdornment, TextField} from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import axios from 'axios';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 import api from '../../../services/api';
-import FormControl from '@material-ui/core/FormControl';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 
 
 function Profile( props ) {
-  const { window } = props;
   const classes = useStyles();
   const theme = createMuiTheme();
 
