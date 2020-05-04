@@ -1,0 +1,7 @@
+{
+  "name": "LocDown",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
