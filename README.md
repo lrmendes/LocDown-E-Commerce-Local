@@ -3,7 +3,7 @@ O LocDown é um projeto desenvolvido para o MegaHack.<br/>O Desafio que buscamos
 A plataforma LocDown pode ser acessada em: https://locdown-megahack.herokuapp.com
 
 "<i>Com o grande número de comércios fechados na atual crise, os comerciantes locais, principalmente varejistas, tiveram de fechar as portas e perderam vendas, pois necessitam do contato físico para isso e não estavam preparados para aderir ao E-commerce tradicional devido a sua complexa logística (entregas nacionais/correios) e relativo custo.
-<p>Visualizando esse problema, o LocDown é uma solução que visa proporcionar uma plataforma de E-COMMERCE LOCAL, no qual empresas podem vender produtos para clientes de sua cidade de forma digital, evitando o contato físico e mantendo o comércio aquecido. Focando no comércio local, garante-se também entregas rápidas, como delivery, algo não encontrado no varejo local.<p>Com isso o LocDown procura trazer uma nova forma de comércio varejista local, que possibilite ao vendedor usar a tecnologia para manter-se trabalhando durante a crise</i>".
+<p>Visualizando esse problema, o LocDown é uma solução que visa proporcionar uma plataforma de E-COMMERCE LOCAL, na qual empresas podem vender produtos para clientes de sua cidade de forma digital, evitando o contato físico e mantendo suas vendas. O foco no comércio local, garante ao cliente entregas rápidas, como delivery, algo não encontrado no varejo em geral.<p>Com isso o LocDown procura trazer uma nova forma de comércio para empresas que buscam formas de vender durante a crise, possibilitando ao vendedor usar a tecnologia para manter-se trabalhando e não fechar as portas definitivamente.</i>".
 
 #### Telas da aplicação & Fluxo de Execução (FIGMA)
 Todas as telas e fluxo de execução da aplicação (Web/Mobile) podem ser visualizados no Figma pelo seguinte link: <a href="https://www.figma.com/file/7EBM5HmE4tfIpKU1d4DI4G/LocDown-APP-View?node-id=0%3A1">Visualizar Projeto LocDown (Figma)</a>
@@ -21,7 +21,7 @@ O banco de dados exige o MongoDB instalado e inicia-se automaticamente em localh
 
 #### Funcionalidades Implementadas:
 
- * Cliente:
+ * Usuário:
     * Visualizar Lojas locais.
     * Visualizar Produtos dessas Lojas.
     * Comprar um Produto.
